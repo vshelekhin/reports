@@ -1973,6 +1973,95 @@
       });
     }
 
+    const statusEndpoint = "https://script.google.com/macros/s/AKfycbwiY-c6pSS8pMys9B2ukM223D7ZlkUaCRN3CFQ1lTxZLcrzU-HKODSx7OUQpwvanHU/exec";
+    const localStatusKey = "sr-watercolor-candidate-status-v2";
+
+    function setSyncState(panel, text, type = "") {
+      const state = panel.querySelector(".sync-state");
+      if (!state) return;
+      state.textContent = text;
+      state.className = `sync-state ${type}`.trim();
+    }
+
+    function readLocalStatuses() {
+      try {
+        return JSON.parse(localStorage.getItem(localStatusKey) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function writeLocalStatus(artist, values) {
+      const data = readLocalStatuses();
+      data[artist] = { ...(data[artist] || {}), ...values };
+      localStorage.setItem(localStatusKey, JSON.stringify(data));
+    }
+
+    function loadJsonp(url) {
+      return new Promise((resolve, reject) => {
+        const callback = `statusCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement("script");
+        const cleanup = () => {
+          delete window[callback];
+          script.remove();
+        };
+        window[callback] = payload => {
+          cleanup();
+          resolve(payload);
+        };
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("JSONP load failed"));
+        };
+        script.src = `${url}${url.includes("?") ? "&" : "?"}callback=${encodeURIComponent(callback)}`;
+        document.head.appendChild(script);
+      });
+    }
+
+    function loadStatuses() {
+      const url = `${statusEndpoint}?action=list&_=${Date.now()}`;
+      return fetch(url, { method: "GET", cache: "no-store" })
+        .then(response => {
+          if (!response.ok) throw new Error(`Status load failed: ${response.status}`);
+          return response.json();
+        })
+        .catch(() => loadJsonp(url));
+    }
+
+    function valuesFromPanel(panel) {
+      return {
+        artist: panel.dataset.noteKey,
+        status: panel.querySelector("[data-field='status']")?.value || "",
+        owner: panel.querySelector("[data-field='owner']")?.value || "",
+        notes: panel.querySelector("[data-field='notes']")?.value || ""
+      };
+    }
+
+    function applyValues(panel, values) {
+      const status = panel.querySelector("[data-field='status']");
+      const owner = panel.querySelector("[data-field='owner']");
+      const notes = panel.querySelector("[data-field='notes']");
+      if (status && values.status) status.value = values.status;
+      if (owner && values.owner !== undefined) owner.value = values.owner || "";
+      if (notes && values.notes !== undefined) notes.value = values.notes || "";
+    }
+
+    function savePanel(panel) {
+      const values = valuesFromPanel(panel);
+      writeLocalStatus(values.artist, values);
+      setSyncState(panel, "Сохранение...");
+      fetch(statusEndpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(values)
+      }).then(() => {
+        setSyncState(panel, "Сохранено в Google Таблицу", "saved");
+      }).catch(() => {
+        setSyncState(panel, "Не удалось сохранить, осталось локально", "error");
+      });
+    }
+
     function initNotes() {
       const panels = Array.from(document.querySelectorAll(".status-panel"));
       const localData = readLocalStatuses();
@@ -1993,7 +2082,7 @@
         });
       });
 
-      loadJsonp(`${statusEndpoint}?action=list`).then(payload => {
+      loadStatuses().then(payload => {
         if (!payload || !payload.ok || !Array.isArray(payload.data)) throw new Error("Bad status payload");
         const byArtist = new Map(payload.data.map(item => [item.artist, item]));
         panels.forEach(panel => {
