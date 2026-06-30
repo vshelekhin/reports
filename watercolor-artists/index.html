@@ -1,0 +1,1615 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SR: акварелисты, рабочая таблица</title>
+  <style>
+    :root {
+      --bg: #f5f6f7;
+      --paper: #ffffff;
+      --ink: #1d2329;
+      --muted: #63707d;
+      --line: #d7dde3;
+      --head: #eef2f5;
+      --link: #0b63a5;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--bg); font-size: 14px; line-height: 1.42; }
+    a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+    .page { max-width: 100%; padding: 18px; }
+    header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    h1 { margin: 0 0 5px; font-size: 22px; line-height: 1.15; }
+    .meta { margin: 0; color: var(--muted); font-size: 13px; }
+    .tools { display: flex; gap: 8px; align-items: center; min-width: 360px; }
+    input { width: 100%; height: 36px; padding: 0 10px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 4px; font: inherit; }
+    .table-wrap { overflow: auto; background: var(--paper); border: 1px solid var(--line); }
+    table { width: 100%; min-width: 1960px; border-collapse: collapse; table-layout: fixed; }
+    th, td { padding: 10px; vertical-align: top; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    th { position: sticky; top: 0; z-index: 2; color: #2d3842; background: var(--head); font-size: 12px; text-align: left; text-transform: uppercase; letter-spacing: .03em; }
+    th:last-child, td:last-child { border-right: 0; }
+    tbody tr:hover { background: #fafcff; }
+    .col-number { width: 52px; text-align: center; }
+    .col-name { width: 160px; }
+    .col-rating { width: 84px; }
+    .col-summary { width: 270px; }
+    .col-education { width: 260px; }
+    .col-why { width: 300px; }
+    .col-works { width: 410px; }
+    .col-links { width: 210px; }
+    .col-schools { width: 250px; }
+    .col-sources { width: 260px; }
+    .col-notes { width: 230px; }
+    .name { margin: 0 0 6px; font-weight: 700; font-size: 15px; }
+    .note, .level { color: var(--muted); font-size: 12px; }
+    .rating { font-weight: 700; font-size: 18px; }
+    .level { display: block; margin-top: 4px; }
+    ul { margin: 0; padding-left: 17px; }
+    li + li { margin-top: 5px; }
+    .links-list, .sources-list { margin: 0; padding-left: 17px; }
+    .links-list li + li, .sources-list li + li { margin-top: 5px; }
+    .notes-cell { min-height: 128px; padding: 7px; white-space: pre-wrap; background: #fffdf4; border: 1px solid #d9c98f; border-radius: 4px; outline: none; }
+    .notes-cell:focus { background: #fff8cf; border-color: #b78b14; box-shadow: 0 0 0 2px rgba(183, 139, 20, .14); }
+    .schools li.absent { color: var(--muted); list-style: square; }
+    .gallery { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .work { display: grid; gap: 4px; min-width: 0; }
+    .work button { display: block; width: 100%; padding: 0; cursor: zoom-in; background: transparent; border: 1px solid var(--line); border-radius: 3px; }
+    .work img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #e6eaee; }
+    .work span { overflow: hidden; color: var(--muted); font-size: 11px; line-height: 1.25; text-overflow: ellipsis; }
+    .work.broken button { background: repeating-linear-gradient(45deg, #eef2f5, #eef2f5 8px, #e1e7ec 8px, #e1e7ec 16px); }
+    .work.broken img { opacity: .18; }
+    .empty { display: none; padding: 28px; color: var(--muted); background: #fff; border: 1px solid var(--line); }
+    dialog { width: min(1160px, calc(100vw - 32px)); padding: 0; border: 0; background: transparent; }
+    dialog::backdrop { background: rgba(12, 18, 24, .72); }
+    .lightbox { display: grid; grid-template-rows: auto minmax(0, 1fr); max-height: calc(100vh - 32px); overflow: hidden; background: #fff; border-radius: 4px; }
+    .lightbox-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    .lightbox-title { margin: 0; font-weight: 700; }
+    .lightbox-actions { display: flex; gap: 6px; }
+    .lightbox-actions button { min-width: 34px; height: 30px; cursor: pointer; background: #fff; border: 1px solid var(--line); border-radius: 4px; font: inherit; }
+    .lightbox-body { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 10px; align-items: center; min-height: 0; padding: 12px; background: #f0f2f4; }
+    .nav { height: 64px; cursor: pointer; color: #23313d; background: #fff; border: 1px solid var(--line); border-radius: 4px; font-size: 24px; }
+    .lightbox-body img { display: block; max-width: 100%; max-height: calc(100vh - 126px); margin: 0 auto; object-fit: contain; background: #fff; }
+    @media (max-width: 860px) { .page { padding: 12px; } header { display: grid; align-items: start; } .tools { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Сильные художники-акварелисты: рабочая таблица</h1>
+        <p class="meta">15 художников. В каждой строке единый формат школ и галерея из 5 изображений.</p>
+      </div>
+      <div class="tools">
+        <input id="search" type="search" placeholder="Фильтр по ФИО, школе, теме, источнику">
+      </div>
+    </header>
+    <div class="empty" id="empty">По этому фильтру ничего не найдено.</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-number">№</th>
+            <th class="col-name">ФИО</th>
+            <th class="col-rating">Рейтинг</th>
+            <th class="col-summary">Кратко о художнике</th>
+            <th class="col-education">Образование</th>
+            <th class="col-why">Почему высокий рейтинг</th>
+            <th class="col-works">5 характерных картин</th>
+            <th class="col-links">Сайт, соцсети</th>
+            <th class="col-schools">Курсы в школах</th>
+            <th class="col-sources">Источники</th>
+            <th class="col-notes">Статус / заметки</th>
+          </tr>
+        </thead>
+        <tbody id="artistRows">
+  <tr data-search="константин стерхов 8.6 национальный уровень рабочая пометка: эталон. курсы у других школ есть, переговорно сложный. российский акварелист, автор книг и международный преподаватель. основные направления — морской и городской пейзаж, портрет, световые состояния и технически сложная работа по влажной бумаге. удмуртский государственный университет; санкт-петербургский академический институт живописи, скульптуры и архитектуры имени и. е. репина, выпуск 1997 года. членство в российских и европейских профессиональных акварельных объединениях. международные выставки, фестивали и мастер-классы; публикации и сотрудничество с производителями художественных материалов. сильная образовательная линия: книги, видеокурсы, многочисленные онлайн-программы и стабильная профильная аудитория. официальный сайт instagram facebook youtube enterclass enterclass enterclass watercolor academy watercolor academy школа художника watercolor academy kalacheva курс не найден художник-онлайн курс не найден daniel smith — профиль художника музей эрарта watercolor academy">
+    <td class="col-number">1</td>
+    <td class="col-name">
+      <p class="name">Константин Стерхов</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.6</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Эталон. Курсы у других школ есть, переговорно сложный. Российский акварелист, автор книг и международный преподаватель. Основные направления — морской и городской пейзаж, портрет, световые состояния и технически сложная работа по влажной бумаге.</td>
+    <td class="col-education">Удмуртский государственный университет; Санкт-Петербургский академический институт живописи, скульптуры и архитектуры имени И. Е. Репина, выпуск 1997 года.</td>
+    <td class="col-why"><ul><li>Членство в российских и европейских профессиональных акварельных объединениях.</li><li>Международные выставки, фестивали и мастер-классы; публикации и сотрудничество с производителями художественных материалов.</li><li>Сильная образовательная линия: книги, видеокурсы, многочисленные онлайн-программы и стабильная профильная аудитория.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="0"
+                    data-work-index="0"
+                    aria-label="Увеличить: Daffodils">
+              <img src="https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-daffodils.jpg"
+                   alt="Константин Стерхов: Daffodils"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://danielsmith.com/konstantin-sterkhov/" target="_blank" rel="noopener noreferrer">Daffodils</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="0"
+                    data-work-index="1"
+                    aria-label="Увеличить: Horse">
+              <img src="https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-horse.jpg"
+                   alt="Константин Стерхов: Horse"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://danielsmith.com/konstantin-sterkhov/" target="_blank" rel="noopener noreferrer">Horse</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="0"
+                    data-work-index="2"
+                    aria-label="Увеличить: Fountain">
+              <img src="https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-fountain.jpg"
+                   alt="Константин Стерхов: Fountain"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://danielsmith.com/konstantin-sterkhov/" target="_blank" rel="noopener noreferrer">Fountain</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="0"
+                    data-work-index="3"
+                    aria-label="Увеличить: Traveler">
+              <img src="https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-traveler.jpg"
+                   alt="Константин Стерхов: Traveler"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://danielsmith.com/konstantin-sterkhov/" target="_blank" rel="noopener noreferrer">Traveler</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="0"
+                    data-work-index="4"
+                    aria-label="Увеличить: Two Women">
+              <img src="https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-two-women.jpg"
+                   alt="Константин Стерхов: Two Women"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://danielsmith.com/konstantin-sterkhov/" target="_blank" rel="noopener noreferrer">Two Women</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.konstantinsterkhov.com/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://www.instagram.com/sterkhovart/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/sterkhovart/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://www.youtube.com/@sterkhovart" target="_blank" rel="noopener noreferrer">YouTube</a></li><li><a href="https://enterclass.com/expert/22727" target="_blank" rel="noopener noreferrer">Enterclass</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://enterclass.com/expert/22727" target="_blank" rel="noopener noreferrer">Enterclass: Enterclass</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/konstantin-sterkhov" target="_blank" rel="noopener noreferrer">Watercolor Academy: Watercolor Academy</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/konstantin-sterkhov" target="_blank" rel="noopener noreferrer">Школа художника: Watercolor Academy</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://danielsmith.com/konstantin-sterkhov/" target="_blank" rel="noopener noreferrer">Daniel Smith — профиль художника</a></li><li><a href="https://www.erarta.com/ru/calendar/exhibitions/detail/271219/" target="_blank" rel="noopener noreferrer">Музей Эрарта</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/konstantin-sterkhov" target="_blank" rel="noopener noreferrer">Watercolor Academy</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Константин Стерхов"
+           aria-label="Статус и заметки для Константин Стерхов"></div>
+    </td>
+  </tr>
+
+  <tr data-search="сергей курбатов 8.5 национальный уровень рабочая пометка: эталон. курсы у других школ есть, переговорно сложный. российский акварелист, автор книги «акварельный джаз» и один из наиболее опытных преподавателей в списке. основные темы — городской пейзаж, архитектура, свет и пленэрная живопись. высшее художественное образование в ленинградском высшем художественно-промышленном училище имени в. и. мухиной, выпуск 1993 года. международные выставки, пленэры и профессиональные проекты в европе и азии. произведения представлены в музейных, галерейных и частных собраниях. сильная коммерческая готовность: преподавание с 2010 года, собственная образовательная система и более ста записанных уроков. официальный сайт и школа instagram enterclass enterclass enterclass школа художника официальный сайт и школа kalacheva курс не найден художник-онлайн курс не найден artefacto курс не найден официальный сайт enterclass — биография и курсы">
+    <td class="col-number">2</td>
+    <td class="col-name">
+      <p class="name">Сергей Курбатов</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.5</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Эталон. Курсы у других школ есть, переговорно сложный. Российский акварелист, автор книги «Акварельный джаз» и один из наиболее опытных преподавателей в списке. Основные темы — городской пейзаж, архитектура, свет и пленэрная живопись.</td>
+    <td class="col-education">Высшее художественное образование в Ленинградском высшем художественно-промышленном училище имени В. И. Мухиной, выпуск 1993 года.</td>
+    <td class="col-why"><ul><li>Международные выставки, пленэры и профессиональные проекты в Европе и Азии.</li><li>Произведения представлены в музейных, галерейных и частных собраниях.</li><li>Сильная коммерческая готовность: преподавание с 2010 года, собственная образовательная система и более ста записанных уроков.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="1"
+                    data-work-index="0"
+                    aria-label="Увеличить: «Солнечный день в старом парке»">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/004-solnecnyj-den-v-starom-parke1_6718d0150e7b3.jpg"
+                   alt="Сергей Курбатов: «Солнечный день в старом парке»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/245" target="_blank" rel="noopener noreferrer">«Солнечный день в старом парке»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="1"
+                    data-work-index="1"
+                    aria-label="Увеличить: «Причал в Специи»">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/prical-v-specese_6718d03c61e9e.jpg"
+                   alt="Сергей Курбатов: «Причал в Специи»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/245" target="_blank" rel="noopener noreferrer">«Причал в Специи»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="1"
+                    data-work-index="2"
+                    aria-label="Увеличить: «Первый снег»">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/pervyj-sneg_6718d048441ed.jpg"
+                   alt="Сергей Курбатов: «Первый снег»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/245" target="_blank" rel="noopener noreferrer">«Первый снег»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="1"
+                    data-work-index="3"
+                    aria-label="Увеличить: Дополнительная работа 1">
+              <img src="https://kurbatovart.ru/uploads/s/2/f/d/2fd1hlkrz888/img/full_5RAAHiC5.jpg"
+                   alt="Сергей Курбатов: Дополнительная работа 1"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://kurbatovart.ru/" target="_blank" rel="noopener noreferrer">Дополнительная работа 1</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="1"
+                    data-work-index="4"
+                    aria-label="Увеличить: Дополнительная работа 2">
+              <img src="https://kurbatovart.ru/uploads/s/2/f/d/2fd1hlkrz888/img/full_0efttPGA.jpg"
+                   alt="Сергей Курбатов: Дополнительная работа 2"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://kurbatovart.ru/" target="_blank" rel="noopener noreferrer">Дополнительная работа 2</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://kurbatovart.ru/" target="_blank" rel="noopener noreferrer">Официальный сайт и школа</a></li><li><a href="https://www.instagram.com/sergei.kurbatov/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://enterclass.com/ru/expert/245" target="_blank" rel="noopener noreferrer">Enterclass</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://enterclass.com/ru/expert/245" target="_blank" rel="noopener noreferrer">Enterclass: Enterclass</a></li><li><a href="https://kurbatovart.ru/" target="_blank" rel="noopener noreferrer">Школа художника: Официальный сайт и школа</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://kurbatovart.ru/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://enterclass.com/ru/expert/245" target="_blank" rel="noopener noreferrer">Enterclass — биография и курсы</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Сергей Курбатов"
+           aria-label="Статус и заметки для Сергей Курбатов"></div>
+    </td>
+  </tr>
+
+  <tr data-search="виктория пришедько 8.5 национальный уровень рабочая пометка: включаем. топ-акварелист, сильная международная репутация. записанный онлайн-курс не подтвержден — это может быть плюсом, если удастся договориться. молдавско-немецкая акварелистка, известная эмоциональными городскими и пейзажными композициями по мокрой бумаге. работы строятся на цветовых растеканиях, контрастном свете и движении. художественная и архитектурная подготовка в киеве; дальнейшее профессиональное развитие и работа в германии. устойчивая известность в европейском акварельном сообществе и регулярные международные выставки. мастер-классы в разных странах, участие в профильных фестивалях и публикациях. высокая узнаваемость техники и стабильная международная аудитория внутри профессионального акварельного сегмента. instagram facebook watercolor academy watercolor academy watercolor academy школа художника watercolor academy kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден watercolor academy — профиль официальная страница facebook">
+    <td class="col-number">3</td>
+    <td class="col-name">
+      <p class="name">Виктория Пришедько</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.5</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Включаем. Топ-акварелист, сильная международная репутация. Записанный онлайн-курс не подтвержден — это может быть плюсом, если удастся договориться. Молдавско-немецкая акварелистка, известная эмоциональными городскими и пейзажными композициями по мокрой бумаге. Работы строятся на цветовых растеканиях, контрастном свете и движении.</td>
+    <td class="col-education">Художественная и архитектурная подготовка в Киеве; дальнейшее профессиональное развитие и работа в Германии.</td>
+    <td class="col-why"><ul><li>Устойчивая известность в европейском акварельном сообществе и регулярные международные выставки.</li><li>Мастер-классы в разных странах, участие в профильных фестивалях и публикациях.</li><li>Высокая узнаваемость техники и стабильная международная аудитория внутри профессионального акварельного сегмента.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="2"
+                    data-work-index="0"
+                    aria-label="Увеличить: Акварель из профессионального портфолио">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-1.jpg"
+                   alt="Виктория Пришедько: Акварель из профессионального портфолио"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Акварель из профессионального портфолио</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="2"
+                    data-work-index="1"
+                    aria-label="Увеличить: Акварель из профессионального портфолио">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-2.jpg"
+                   alt="Виктория Пришедько: Акварель из профессионального портфолио"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Акварель из профессионального портфолио</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="2"
+                    data-work-index="2"
+                    aria-label="Увеличить: Акварель из профессионального портфолио">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-3.jpg"
+                   alt="Виктория Пришедько: Акварель из профессионального портфолио"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Акварель из профессионального портфолио</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="2"
+                    data-work-index="3"
+                    aria-label="Увеличить: Дополнительная работа 1">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-4.jpg"
+                   alt="Виктория Пришедько: Дополнительная работа 1"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Дополнительная работа 1</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="2"
+                    data-work-index="4"
+                    aria-label="Увеличить: Дополнительная работа 2">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-5.jpg"
+                   alt="Виктория Пришедько: Дополнительная работа 2"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Дополнительная работа 2</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/viktoriaprischedko/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/prischedko/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Watercolor Academy</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Watercolor Academy: Watercolor Academy</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Школа художника: Watercolor Academy</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://watercoloracademy.com/watercolor-masters/viktoria-prischedko" target="_blank" rel="noopener noreferrer">Watercolor Academy — профиль</a></li><li><a href="https://www.facebook.com/prischedko/" target="_blank" rel="noopener noreferrer">Официальная страница Facebook</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Виктория Пришедько"
+           aria-label="Статус и заметки для Виктория Пришедько"></div>
+    </td>
+  </tr>
+
+  <tr data-search="ольга литвиненко 8.5 национальный уровень рабочая пометка: включаем по той же логике. сильный профессиональный уровень, академическая база. подтвержденная коммерческая онлайн-линейка не найдена. петербургская художница-график и акварелист. работает с архитектурой, городским светом, пейзажем и камерными сюжетами; её сильная сторона — академическая школа и профессиональная выставочная среда. факультет графики санкт-петербургского академического института имени и. е. репина; последующая аспирантская подготовка. академическое образование, членство в профессиональных российских и международных акварельных объединениях. участие и награды на международных выставках в европе и азии; присутствие работ в музейных и частных собраниях. рейтинг держится преимущественно на профессиональном авторитете и международных выставках; коммерческая онлайн-инфраструктура выражена слабее, чем у ряда других кандидатов. instagram facebook профессиональный профиль kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден artefacto курс не найден art-spb — профиль и работы мир современной акварели">
+    <td class="col-number">4</td>
+    <td class="col-name">
+      <p class="name">Ольга Литвиненко</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.5</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Включаем по той же логике. Сильный профессиональный уровень, академическая база. Подтвержденная коммерческая онлайн-линейка не найдена. Петербургская художница-график и акварелист. Работает с архитектурой, городским светом, пейзажем и камерными сюжетами; её сильная сторона — академическая школа и профессиональная выставочная среда.</td>
+    <td class="col-education">Факультет графики Санкт-Петербургского академического института имени И. Е. Репина; последующая аспирантская подготовка.</td>
+    <td class="col-why"><ul><li>Академическое образование, членство в профессиональных российских и международных акварельных объединениях.</li><li>Участие и награды на международных выставках в Европе и Азии; присутствие работ в музейных и частных собраниях.</li><li>Рейтинг держится преимущественно на профессиональном авторитете и международных выставках; коммерческая онлайн-инфраструктура выражена слабее, чем у ряда других кандидатов.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="3"
+                    data-work-index="0"
+                    aria-label="Увеличить: «Прага»">
+              <img src="https://www.art-spb.ru/upload/good_image/11064_small.jpg"
+                   alt="Ольга Литвиненко: «Прага»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.art-spb.ru/artist/605" target="_blank" rel="noopener noreferrer">«Прага»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="3"
+                    data-work-index="1"
+                    aria-label="Увеличить: «Дождливый день»">
+              <img src="https://www.art-spb.ru/upload/good_image/21892_small.jpg"
+                   alt="Ольга Литвиненко: «Дождливый день»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.art-spb.ru/artist/605" target="_blank" rel="noopener noreferrer">«Дождливый день»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="3"
+                    data-work-index="2"
+                    aria-label="Увеличить: «Петербург»">
+              <img src="https://www.art-spb.ru/upload/good_image/21891_small.jpg"
+                   alt="Ольга Литвиненко: «Петербург»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.art-spb.ru/artist/605" target="_blank" rel="noopener noreferrer">«Петербург»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="3"
+                    data-work-index="3"
+                    aria-label="Увеличить: Дополнительная работа 1">
+              <img src="https://www.art-spb.ru/upload/good_image/14960_small.jpg"
+                   alt="Ольга Литвиненко: Дополнительная работа 1"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.art-spb.ru/artist/605" target="_blank" rel="noopener noreferrer">Дополнительная работа 1</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="3"
+                    data-work-index="4"
+                    aria-label="Увеличить: Дополнительная работа 2">
+              <img src="https://www.art-spb.ru/upload/good_image/12262_small.jpg"
+                   alt="Ольга Литвиненко: Дополнительная работа 2"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.art-spb.ru/artist/605" target="_blank" rel="noopener noreferrer">Дополнительная работа 2</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/olga1_litvinenko/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/olga.litvinenko.watercolor.artist/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://kodakvareli.ru/olga-litvinenko" target="_blank" rel="noopener noreferrer">Профессиональный профиль</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://www.art-spb.ru/artist/605" target="_blank" rel="noopener noreferrer">ART-SPB — профиль и работы</a></li><li><a href="https://kodakvareli.ru/olga-litvinenko" target="_blank" rel="noopener noreferrer">Мир современной акварели</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Ольга Литвиненко"
+           aria-label="Статус и заметки для Ольга Литвиненко"></div>
+    </td>
+  </tr>
+
+  <tr data-search="екатерина сава 8.4 национальный уровень рабочая пометка: подходит. есть опыт онлайн-курсов. белорусская акварелистка, график и архитектор, известная ботаническими и цветочными композициями. активно участвует в международном акварельном движении и преподаёт онлайн. профессиональная подготовка связана с архитектурой, графикой и изобразительным искусством; точное наименование учебного заведения в проверенных открытых профилях указано непоследовательно. членство в american watercolor society и national watercolor society, руководство белорусским отделением iws. международные выставки, конкурсы и профессиональные награды. большой опыт проведения мастер-классов и записи коммерческих онлайн-курсов для международной аудитории. instagram facebook курс artefacto artefacto курс artefacto школа художника курс artefacto kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден artefacto — курс и биография instagram художницы">
+    <td class="col-number">5</td>
+    <td class="col-name">
+      <p class="name">Екатерина Сава</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.4</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Есть опыт онлайн-курсов. Белорусская акварелистка, график и архитектор, известная ботаническими и цветочными композициями. Активно участвует в международном акварельном движении и преподаёт онлайн.</td>
+    <td class="col-education">Профессиональная подготовка связана с архитектурой, графикой и изобразительным искусством; точное наименование учебного заведения в проверенных открытых профилях указано непоследовательно.</td>
+    <td class="col-why"><ul><li>Членство в American Watercolor Society и National Watercolor Society, руководство белорусским отделением IWS.</li><li>Международные выставки, конкурсы и профессиональные награды.</li><li>Большой опыт проведения мастер-классов и записи коммерческих онлайн-курсов для международной аудитории.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="4"
+                    data-work-index="0"
+                    aria-label="Увеличить: Цветочная акварель из курса Artefacto">
+              <img src="https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/285045d4d6ec950087f60fcad9fd9926.jpg/s/s1200x/a/165216/sc/166"
+                   alt="Екатерина Сава: Цветочная акварель из курса Artefacto"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://artefactoschool.online/Course_flowers_sava" target="_blank" rel="noopener noreferrer">Цветочная акварель из курса Artefacto</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="4"
+                    data-work-index="1"
+                    aria-label="Увеличить: Цветочная акварель из курса Artefacto">
+              <img src="https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/7559cd16a479b68459c329c9c56413ed.jpg/s/s1200x/a/165216/sc/75"
+                   alt="Екатерина Сава: Цветочная акварель из курса Artefacto"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://artefactoschool.online/Course_flowers_sava" target="_blank" rel="noopener noreferrer">Цветочная акварель из курса Artefacto</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="4"
+                    data-work-index="2"
+                    aria-label="Увеличить: Цветочная акварель">
+              <img src="https://fs-thb02.getcourse.ru/fileservice/file/thumbnail/h/fb1e5b4a003d2339ff2f18bba46e9b01.jpg/s/s1200x/a/165216/sc/271"
+                   alt="Екатерина Сава: Цветочная акварель"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://artefactoschool.online/Watercolor_in_flowers_m" target="_blank" rel="noopener noreferrer">Цветочная акварель</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="4"
+                    data-work-index="3"
+                    aria-label="Увеличить: Цветочная акварель">
+              <img src="https://fs-thb01.getcourse.ru/fileservice/file/thumbnail/h/b076d0e7efeafccd4e7e44419ad13eee.jpg/s/s1200x/a/165216/sc/483"
+                   alt="Екатерина Сава: Цветочная акварель"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://artefactoschool.online/Watercolor_in_flowers_m" target="_blank" rel="noopener noreferrer">Цветочная акварель</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="4"
+                    data-work-index="4"
+                    aria-label="Увеличить: Цветочная акварель">
+              <img src="https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/a1a1692b42b4b3834065030935b05e25.jpg/s/s1200x/a/165216/sc/441"
+                   alt="Екатерина Сава: Цветочная акварель"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://artefactoschool.online/Watercolor_in_flowers_m" target="_blank" rel="noopener noreferrer">Цветочная акварель</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/ekaterina_sava_art/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/ekaterina.sava.slon/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://artefactoschool.online/Course_flowers_sava" target="_blank" rel="noopener noreferrer">Курс Artefacto</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://artefactoschool.online/Course_flowers_sava" target="_blank" rel="noopener noreferrer">Artefacto: Курс Artefacto</a></li><li><a href="https://artefactoschool.online/Course_flowers_sava" target="_blank" rel="noopener noreferrer">Школа художника: Курс Artefacto</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://artefactoschool.online/Course_flowers_sava" target="_blank" rel="noopener noreferrer">Artefacto — курс и биография</a></li><li><a href="https://www.instagram.com/ekaterina_sava_art/" target="_blank" rel="noopener noreferrer">Instagram художницы</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Екатерина Сава"
+           aria-label="Статус и заметки для Екатерина Сава"></div>
+    </td>
+  </tr>
+
+  <tr data-search="игорь сава 8.4 национальный уровень рабочая пометка: подходит. есть опыт онлайн-уроков / платформ. молдавско-итальянский акварелист, живущий и работающий в риме. основные направления — архитектура, городской пейзаж, море и динамичные пространственные композиции. художественная школа имени и. репина в кишинёве; диплом в области графического дизайна; дальнейшее обучение изобразительному искусству в риме. основатель собственной акварельной школы в риме и востребованный международный преподаватель. регулярные зарубежные выставки, фестивали, конкурсы и мастер-классы. хорошая адаптация метода к онлайн-обучению и узнаваемый архитектурно-пейзажный стиль. instagram terracotta watercolor academy watercolor academy watercolor academy школа художника watercolor academy kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден watercolor academy — профиль terracotta — биография">
+    <td class="col-number">6</td>
+    <td class="col-name">
+      <p class="name">Игорь Сава</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.4</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Есть опыт онлайн-уроков / платформ. Молдавско-итальянский акварелист, живущий и работающий в Риме. Основные направления — архитектура, городской пейзаж, море и динамичные пространственные композиции.</td>
+    <td class="col-education">Художественная школа имени И. Репина в Кишинёве; диплом в области графического дизайна; дальнейшее обучение изобразительному искусству в Риме.</td>
+    <td class="col-why"><ul><li>Основатель собственной акварельной школы в Риме и востребованный международный преподаватель.</li><li>Регулярные зарубежные выставки, фестивали, конкурсы и мастер-классы.</li><li>Хорошая адаптация метода к онлайн-обучению и узнаваемый архитектурно-пейзажный стиль.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="5"
+                    data-work-index="0"
+                    aria-label="Увеличить: Акварель из профессионального портфолио">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/igor-sava-1.jpg"
+                   alt="Игорь Сава: Акварель из профессионального портфолио"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Акварель из профессионального портфолио</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="5"
+                    data-work-index="1"
+                    aria-label="Увеличить: Акварель из профессионального портфолио">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/igor-sava-2.jpg"
+                   alt="Игорь Сава: Акварель из профессионального портфолио"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Акварель из профессионального портфолио</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="5"
+                    data-work-index="2"
+                    aria-label="Увеличить: Акварель из профессионального портфолио">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/igor-sava-3.jpg"
+                   alt="Игорь Сава: Акварель из профессионального портфолио"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Акварель из профессионального портфолио</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="5"
+                    data-work-index="3"
+                    aria-label="Увеличить: Венецианский мотив">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/igor-sava-4.jpg"
+                   alt="Игорь Сава: Венецианский мотив"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Венецианский мотив</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="5"
+                    data-work-index="4"
+                    aria-label="Увеличить: Морской город">
+              <img src="https://watercoloracademy.com/images/watercolor-masters/igor-sava-6.jpg"
+                   alt="Игорь Сава: Морской город"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Морской город</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/igor_sava_art/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://terracotta.art/artist/igor-sava" target="_blank" rel="noopener noreferrer">Terracotta</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Watercolor Academy</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Watercolor Academy: Watercolor Academy</a></li><li><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Школа художника: Watercolor Academy</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://watercoloracademy.com/watercolor-masters/igor-sava" target="_blank" rel="noopener noreferrer">Watercolor Academy — профиль</a></li><li><a href="https://terracotta.art/artist/igor-sava" target="_blank" rel="noopener noreferrer">Terracotta — биография</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Игорь Сава"
+           aria-label="Статус и заметки для Игорь Сава"></div>
+    </td>
+  </tr>
+
+  <tr data-search="сергей темерев 8.4 национальный уровень рабочая пометка: включаем. сильный профессиональный статус. скорее надо проверять готовность к записи курса. петербургский художник, архитектор и преподаватель. один из наиболее профессионально устойчивых российских авторов морской и городской станковой акварели. средняя художественная школа имени б. в. иогансона; архитектурный факультет института живописи, скульптуры и архитектуры имени и. е. репина. преподавательский статус в академии имени а. л. штиглица и членство в профессиональных союзах россии и европы. участие более чем в тридцати международных выставках и биеннале. высокий профессиональный авторитет в станковой акварели; аудиторная и коммерческая инфраструктура умереннее, чем у самых медийных преподавателей. официальный сайт instagram facebook youtube kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден artefacto курс не найден официальный сайт art-mx — профиль и работы">
+    <td class="col-number">7</td>
+    <td class="col-name">
+      <p class="name">Сергей Темерев</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.4</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Включаем. Сильный профессиональный статус. Скорее надо проверять готовность к записи курса. Петербургский художник, архитектор и преподаватель. Один из наиболее профессионально устойчивых российских авторов морской и городской станковой акварели.</td>
+    <td class="col-education">Средняя художественная школа имени Б. В. Иогансона; архитектурный факультет Института живописи, скульптуры и архитектуры имени И. Е. Репина.</td>
+    <td class="col-why"><ul><li>Преподавательский статус в Академии имени А. Л. Штиглица и членство в профессиональных союзах России и Европы.</li><li>Участие более чем в тридцати международных выставках и биеннале.</li><li>Высокий профессиональный авторитет в станковой акварели; аудиторная и коммерческая инфраструктура умереннее, чем у самых медийных преподавателей.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="6"
+                    data-work-index="0"
+                    aria-label="Увеличить: «За пару часов до отлива»">
+              <img src="https://art-mx.ru/gallery/preview/430/27787.jpg"
+                   alt="Сергей Темерев: «За пару часов до отлива»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://art-mx.ru/temerev-sg/" target="_blank" rel="noopener noreferrer">«За пару часов до отлива»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="6"
+                    data-work-index="1"
+                    aria-label="Увеличить: «Синева и золото реки Фонтанки 3»">
+              <img src="https://art-mx.ru/gallery/preview/430/27789.jpg"
+                   alt="Сергей Темерев: «Синева и золото реки Фонтанки 3»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://art-mx.ru/temerev-sg/" target="_blank" rel="noopener noreferrer">«Синева и золото реки Фонтанки 3»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="6"
+                    data-work-index="2"
+                    aria-label="Увеличить: «Электрический допинг города 3»">
+              <img src="https://art-mx.ru/gallery/preview/430/27783.jpg"
+                   alt="Сергей Темерев: «Электрический допинг города 3»"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://art-mx.ru/temerev-sg/" target="_blank" rel="noopener noreferrer">«Электрический допинг города 3»</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="6"
+                    data-work-index="3"
+                    aria-label="Увеличить: Дополнительная работа 1">
+              <img src="https://art-mx.ru/gallery/preview/430/5988.jpg"
+                   alt="Сергей Темерев: Дополнительная работа 1"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://art-mx.ru/temerev-sg/" target="_blank" rel="noopener noreferrer">Дополнительная работа 1</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="6"
+                    data-work-index="4"
+                    aria-label="Увеличить: Дополнительная работа 2">
+              <img src="https://art-mx.ru/gallery/preview/430/6654.jpg"
+                   alt="Сергей Темерев: Дополнительная работа 2"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://art-mx.ru/temerev-sg/" target="_blank" rel="noopener noreferrer">Дополнительная работа 2</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://temerevart.com/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://www.instagram.com/_sergestus_/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/sergey.temerev.watercolor/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://www.youtube.com/c/SergeyTemerev/videos" target="_blank" rel="noopener noreferrer">YouTube</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://temerevart.com/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://art-mx.ru/temerev-sg/" target="_blank" rel="noopener noreferrer">ART-MX — профиль и работы</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Сергей Темерев"
+           aria-label="Статус и заметки для Сергей Темерев"></div>
+    </td>
+  </tr>
+
+  <tr data-search="анастасия кустова 8.4 национальный уровень рабочая пометка: подходит. сильный курсный кандидат. российская акварелистка и преподаватель, специализирующаяся на горных и природных пейзажах. построила сильный образовательный бренд вокруг пленэрных путешествий и техники передачи пространства. высшее инженерное образование в мгту имени н. э. баумана; профессиональный художественный путь выстроен через самостоятельную практику, мастерские, пленэры и выставочную деятельность. международные биеннале, награды, работа в жюри и членство в профессиональных акварельных объединениях. автор книги «акварель для взрослых» с крупным тиражом. десятки пленэрных туров и мастер-классов во многих странах, развитые онлайн-курсы, сайт и youtube. официальный сайт instagram youtube enterclass enterclass enterclass школа художника enterclass — профиль и курсы kalacheva курс не найден художник-онлайн курс не найден artefacto курс не найден официальный сайт enterclass — профиль и курсы">
+    <td class="col-number">8</td>
+    <td class="col-name">
+      <p class="name">Анастасия Кустова</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.4</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Сильный курсный кандидат. Российская акварелистка и преподаватель, специализирующаяся на горных и природных пейзажах. Построила сильный образовательный бренд вокруг пленэрных путешествий и техники передачи пространства.</td>
+    <td class="col-education">Высшее инженерное образование в МГТУ имени Н. Э. Баумана; профессиональный художественный путь выстроен через самостоятельную практику, мастерские, пленэры и выставочную деятельность.</td>
+    <td class="col-why"><ul><li>Международные биеннале, награды, работа в жюри и членство в профессиональных акварельных объединениях.</li><li>Автор книги «Акварель для взрослых» с крупным тиражом.</li><li>Десятки пленэрных туров и мастер-классов во многих странах, развитые онлайн-курсы, сайт и YouTube.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="7"
+                    data-work-index="0"
+                    aria-label="Увеличить: Городской мотив">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/kustovanepal261a53352e05b3_62beaed30de54.jpg"
+                   alt="Анастасия Кустова: Городской мотив"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Городской мотив</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="7"
+                    data-work-index="1"
+                    aria-label="Увеличить: Лодка">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/kustovalodkaafisha_61b9eb4a9084a.jpg"
+                   alt="Анастасия Кустова: Лодка"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Лодка</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="7"
+                    data-work-index="2"
+                    aria-label="Увеличить: Огонь">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/kustovastihiikoster61a5225e8dcd8_625a6ba499e51.jpg"
+                   alt="Анастасия Кустова: Огонь"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Огонь</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="7"
+                    data-work-index="3"
+                    aria-label="Увеличить: Ретро-автомобиль">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/afisa-vtomobil-kustova_659a5ecd90a2f.jpg"
+                   alt="Анастасия Кустова: Ретро-автомобиль"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Ретро-автомобиль</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="7"
+                    data-work-index="4"
+                    aria-label="Увеличить: Исаакиевский собор">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/80032_6238237349618.jpg"
+                   alt="Анастасия Кустова: Исаакиевский собор"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Исаакиевский собор</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://art-kustova.ru/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://www.instagram.com/kustova_anastasia/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.youtube.com/c/AnastasiaKustova" target="_blank" rel="noopener noreferrer">YouTube</a></li><li><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Enterclass</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Enterclass: Enterclass</a></li><li><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Школа художника: Enterclass — профиль и курсы</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://art-kustova.ru/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://enterclass.com/ru/expert/2914" target="_blank" rel="noopener noreferrer">Enterclass — профиль и курсы</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Анастасия Кустова"
+           aria-label="Статус и заметки для Анастасия Кустова"></div>
+    </td>
+  </tr>
+
+  <tr data-search="елена базанова 8.3 национальный уровень рабочая пометка: подходит. есть опыт онлайн-курсов. петербургская художница-график, один из наиболее узнаваемых российских мастеров ботанической и предметной акварели. известна сложными многослойными натюрмортами и детальным наблюдением натуры. средняя художественная школа имени б. в. иогансона; факультет книжной графики института живописи, скульптуры и архитектуры имени и. е. репина. член союза художников и санкт-петербургского общества акварелистов; многолетняя выставочная деятельность и музейные собрания. сильная публикационная и профессиональная репутация в ботанической и предметной акварели. развитая образовательная история: многочисленные курсы на lectoroom, книги, демонстрации и несколько тысяч учеников. instagram youtube lectoroom профессиональный профиль lectoroom lectoroom школа художника lectoroom — профиль и курсы kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден lectoroom — профиль и курсы мир акварели — биография">
+    <td class="col-number">9</td>
+    <td class="col-name">
+      <p class="name">Елена Базанова</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.3</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Есть опыт онлайн-курсов. Петербургская художница-график, один из наиболее узнаваемых российских мастеров ботанической и предметной акварели. Известна сложными многослойными натюрмортами и детальным наблюдением натуры.</td>
+    <td class="col-education">Средняя художественная школа имени Б. В. Иогансона; факультет книжной графики Института живописи, скульптуры и архитектуры имени И. Е. Репина.</td>
+    <td class="col-why"><ul><li>Член Союза художников и Санкт-Петербургского общества акварелистов; многолетняя выставочная деятельность и музейные собрания.</li><li>Сильная публикационная и профессиональная репутация в ботанической и предметной акварели.</li><li>Развитая образовательная история: многочисленные курсы на Lectoroom, книги, демонстрации и несколько тысяч учеников.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="8"
+                    data-work-index="0"
+                    aria-label="Увеличить: Дыня">
+              <img src="https://lectoroom.com/files/modules/courses/877/common/screenshot_2024-09-06_at_10_26_12.png"
+                   alt="Елена Базанова: Дыня"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Дыня</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="8"
+                    data-work-index="1"
+                    aria-label="Увеличить: Вишня">
+              <img src="https://lectoroom.com/files/modules/courses/870/common/1e873b8bd69b88d32b57cc6bd2a6eb1a.png"
+                   alt="Елена Базанова: Вишня"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Вишня</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="8"
+                    data-work-index="2"
+                    aria-label="Увеличить: Цветы">
+              <img src="https://lectoroom.com/files/modules/courses/867/common/screenshot_2024-06-18_at_17_56_21.png"
+                   alt="Елена Базанова: Цветы"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Цветы</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="8"
+                    data-work-index="3"
+                    aria-label="Увеличить: Подсолнух">
+              <img src="https://lectoroom.com/files/modules/courses/818/common/portfolio-1695297722-1695298434.jpeg"
+                   alt="Елена Базанова: Подсолнух"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Подсолнух</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="8"
+                    data-work-index="4"
+                    aria-label="Увеличить: Овощной натюрморт">
+              <img src="https://lectoroom.com/files/modules/courses/827/common/48c180a0d460d805e4d55b1c9790d240.jpg"
+                   alt="Елена Базанова: Овощной натюрморт"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Овощной натюрморт</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/elenabazanova_art/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.youtube.com/@elenabazanova_art" target="_blank" rel="noopener noreferrer">YouTube</a></li><li><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Lectoroom</a></li><li><a href="https://world-watercolor.ru/bazanova24" target="_blank" rel="noopener noreferrer">Профессиональный профиль</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Lectoroom: Lectoroom</a></li><li><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Школа художника: Lectoroom — профиль и курсы</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://lectoroom.com/teachers/elena-bazanova" target="_blank" rel="noopener noreferrer">Lectoroom — профиль и курсы</a></li><li><a href="https://world-watercolor.ru/bazanova24" target="_blank" rel="noopener noreferrer">Мир акварели — биография</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Елена Базанова"
+           aria-label="Статус и заметки для Елена Базанова"></div>
+    </td>
+  </tr>
+
+  <tr data-search="евгений кисничан 8.2 национальный уровень рабочая пометка: подходит. международный акварельный уровень, есть обучающая активность. молдавский акварелист, известный атмосферными городскими и сельскими пейзажами, мягким светом и свободной тональной живописью. на международном рынке использует имя eugen chisnicean. детская художественная школа; институт искусств в кишинёве, направления интерьерного дизайна и архитектуры; академия искусств кишинёва, живопись, выпуск 2012 года. регулярное участие в международных акварельных выставках и статус приглашённого художника зарубежных салонов. мастер-классы и пленэры в разных странах европы и за её пределами. узнаваемая пейзажная манера и международно ориентированные сайт и социальные сети. официальный сайт instagram facebook youtube kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден artefacto курс не найден официальная биография официальное портфолио">
+    <td class="col-number">10</td>
+    <td class="col-name">
+      <p class="name">Евгений Кисничан</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.2</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Международный акварельный уровень, есть обучающая активность. Молдавский акварелист, известный атмосферными городскими и сельскими пейзажами, мягким светом и свободной тональной живописью. На международном рынке использует имя Eugen Chisnicean.</td>
+    <td class="col-education">Детская художественная школа; Институт искусств в Кишинёве, направления интерьерного дизайна и архитектуры; Академия искусств Кишинёва, живопись, выпуск 2012 года.</td>
+    <td class="col-why"><ul><li>Регулярное участие в международных акварельных выставках и статус приглашённого художника зарубежных салонов.</li><li>Мастер-классы и пленэры в разных странах Европы и за её пределами.</li><li>Узнаваемая пейзажная манера и международно ориентированные сайт и социальные сети.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="9"
+                    data-work-index="0"
+                    aria-label="Увеличить: Avrig">
+              <img src="https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/1714992996570-J35RI3J2XZ235PVVZNCV/Avrig.jpg?format=1500w"
+                   alt="Евгений Кисничан: Avrig"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.eugenchisnicean.com/portfolio" target="_blank" rel="noopener noreferrer">Avrig</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="9"
+                    data-work-index="1"
+                    aria-label="Увеличить: Winter in Carpathians">
+              <img src="https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/533f0c39-a5af-4cdc-a3b9-334a6b158961/Winter+in+Carpathians.jpg?format=1500w"
+                   alt="Евгений Кисничан: Winter in Carpathians"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.eugenchisnicean.com/portfolio" target="_blank" rel="noopener noreferrer">Winter in Carpathians</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="9"
+                    data-work-index="2"
+                    aria-label="Увеличить: Mallorca">
+              <img src="https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/1714992231869-357WY4ZXYI5IZV2IRWK5/Mallorca.jpg?format=1500w"
+                   alt="Евгений Кисничан: Mallorca"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.eugenchisnicean.com/portfolio" target="_blank" rel="noopener noreferrer">Mallorca</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="9"
+                    data-work-index="3"
+                    aria-label="Увеличить: Carnac">
+              <img src="https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/1716115209499-0BDNLV0COKZKWUJK027C/Carnac.jpg?format=1500w"
+                   alt="Евгений Кисничан: Carnac"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.eugenchisnicean.com/portfolio" target="_blank" rel="noopener noreferrer">Carnac</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="9"
+                    data-work-index="4"
+                    aria-label="Увеличить: Landscape">
+              <img src="https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/d189af5c-9824-47f9-82fa-382861a5ad18/DSC05570.jpg?format=1500w"
+                   alt="Евгений Кисничан: Landscape"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.eugenchisnicean.com/portfolio" target="_blank" rel="noopener noreferrer">Landscape</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.eugenchisnicean.com/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://www.instagram.com/eugen.chisnicean/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/chisnicean" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://www.youtube.com/channel/UC_QumR2cIvMk2w94EIyrwCg" target="_blank" rel="noopener noreferrer">YouTube</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://www.eugenchisnicean.com/about" target="_blank" rel="noopener noreferrer">Официальная биография</a></li><li><a href="https://www.eugenchisnicean.com/portfolio" target="_blank" rel="noopener noreferrer">Официальное портфолио</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Евгений Кисничан"
+           aria-label="Статус и заметки для Евгений Кисничан"></div>
+    </td>
+  </tr>
+
+  <tr data-search="юлия барминова 8.1 международный уровень рабочая пометка: подходит. сильный коммерческий кандидат, море / travel watercolor. российская акварелистка и преподаватель, специализирующаяся на море, волнах, береговой архитектуре и портовых городах. построила один из наиболее заметных образовательных брендов в нише морской акварели. имеет архитектурную подготовку; точное учебное заведение в открытых образовательных профилях указывается не во всех версиях биографии. узкая и легко считываемая специализация на морской акварели, подкреплённая большим объёмом путешествий и натурного материала. многочисленные очные мастер-классы, онлайн-курсы и международные образовательные проекты. развитые instagram, youtube, patreon и продукты на lectoroom; высокая коммерческая пригодность для школы. instagram facebook youtube patreon lectoroom lectoroom lectoroom kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден artefacto курс не найден lectoroom — морская пена lectoroom — венеция instagram художницы">
+    <td class="col-number">11</td>
+    <td class="col-name">
+      <p class="name">Юлия Барминова</p>
+      <span class="note">международный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.1</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Сильный коммерческий кандидат, море / travel watercolor. Российская акварелистка и преподаватель, специализирующаяся на море, волнах, береговой архитектуре и портовых городах. Построила один из наиболее заметных образовательных брендов в нише морской акварели.</td>
+    <td class="col-education">Имеет архитектурную подготовку; точное учебное заведение в открытых образовательных профилях указывается не во всех версиях биографии.</td>
+    <td class="col-why"><ul><li>Узкая и легко считываемая специализация на морской акварели, подкреплённая большим объёмом путешествий и натурного материала.</li><li>Многочисленные очные мастер-классы, онлайн-курсы и международные образовательные проекты.</li><li>Развитые Instagram, YouTube, Patreon и продукты на Lectoroom; высокая коммерческая пригодность для школы.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="10"
+                    data-work-index="0"
+                    aria-label="Увеличить: Морская работа">
+              <img src="https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592889614-E4ZON6TUJBN6QMBW1MDL/PiP+-+Julia+B+-+Works+-+Site_4.png"
+                   alt="Юлия Барминова: Морская работа"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.paint-in-portugal.com/tiedb/julia-barminova" target="_blank" rel="noopener noreferrer">Морская работа</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="10"
+                    data-work-index="1"
+                    aria-label="Увеличить: Морская работа">
+              <img src="https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592946450-DJTIGB9NBTFGEW4U1IFF/PiP+-+Julia+B+-+Works+-+Site_5.png"
+                   alt="Юлия Барминова: Морская работа"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.paint-in-portugal.com/tiedb/julia-barminova" target="_blank" rel="noopener noreferrer">Морская работа</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="10"
+                    data-work-index="2"
+                    aria-label="Увеличить: Морская работа">
+              <img src="https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592897119-X06LLZD9PE8VD59K2LI9/PiP+-+Julia+B+-+Works+-+Site_6.jpg"
+                   alt="Юлия Барминова: Морская работа"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.paint-in-portugal.com/tiedb/julia-barminova" target="_blank" rel="noopener noreferrer">Морская работа</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="10"
+                    data-work-index="3"
+                    aria-label="Увеличить: Морская работа">
+              <img src="https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592905444-V3H9LA7I79OPKAHEAPUD/PiP+-+Julia+B+-+Works+-+Site_7.jpg"
+                   alt="Юлия Барминова: Морская работа"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.paint-in-portugal.com/tiedb/julia-barminova" target="_blank" rel="noopener noreferrer">Морская работа</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="10"
+                    data-work-index="4"
+                    aria-label="Увеличить: Морская работа">
+              <img src="https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592909722-XIMJLL05LD1M3O4A03B0/PiP+-+Julia+B+-+Works+-+Site_8.jpg"
+                   alt="Юлия Барминова: Морская работа"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://www.paint-in-portugal.com/tiedb/julia-barminova" target="_blank" rel="noopener noreferrer">Морская работа</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/juliabarminova/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/juliabarminova/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://www.youtube.com/@juliabarminova" target="_blank" rel="noopener noreferrer">YouTube</a></li><li><a href="https://www.patreon.com/juliabarminova" target="_blank" rel="noopener noreferrer">Patreon</a></li><li><a href="https://lectoroom.com/courses/seafoam" target="_blank" rel="noopener noreferrer">Lectoroom</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://lectoroom.com/courses/seafoam" target="_blank" rel="noopener noreferrer">Lectoroom: Lectoroom</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://lectoroom.com/courses/seafoam" target="_blank" rel="noopener noreferrer">Lectoroom — морская пена</a></li><li><a href="https://lectoroom.com/courses/venice" target="_blank" rel="noopener noreferrer">Lectoroom — Венеция</a></li><li><a href="https://www.instagram.com/juliabarminova/" target="_blank" rel="noopener noreferrer">Instagram художницы</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Юлия Барминова"
+           aria-label="Статус и заметки для Юлия Барминова"></div>
+    </td>
+  </tr>
+
+  <tr data-search="сергей лысый 8.0 национальный уровень рабочая пометка: подходит. есть enterclass, понятный формат. акварелист, живущий в литве, специализируется на городских видах, воде, отражениях и свободной пленэрной живописи. активно преподаёт и сотрудничает с российскими онлайн-платформами. обучался на художественно-графическом факультете одесского педагогического института; дальнейшее развитие связано с самостоятельной практикой в клайпеде и международными мастер-классами. персональные выставки и участие в международных конкурсах в европе, азии, америке и австралии. регулярная преподавательская практика с 2014 года. подтверждённые коммерческие онлайн-курсы на enterclass и собственная международная интернет-аудитория. официальный сайт instagram facebook enterclass enterclass enterclass школа художника enterclass — профиль и курсы kalacheva курс не найден художник-онлайн курс не найден artefacto курс не найден enterclass — профиль и курсы официальный сайт">
+    <td class="col-number">12</td>
+    <td class="col-name">
+      <p class="name">Сергей Лысый</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.0</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Есть Enterclass, понятный формат. Акварелист, живущий в Литве, специализируется на городских видах, воде, отражениях и свободной пленэрной живописи. Активно преподаёт и сотрудничает с российскими онлайн-платформами.</td>
+    <td class="col-education">Обучался на художественно-графическом факультете Одесского педагогического института; дальнейшее развитие связано с самостоятельной практикой в Клайпеде и международными мастер-классами.</td>
+    <td class="col-why"><ul><li>Персональные выставки и участие в международных конкурсах в Европе, Азии, Америке и Австралии.</li><li>Регулярная преподавательская практика с 2014 года.</li><li>Подтверждённые коммерческие онлайн-курсы на Enterclass и собственная международная интернет-аудитория.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="11"
+                    data-work-index="0"
+                    aria-label="Увеличить: Акварель из портфолио Enterclass">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/lisiy001_5c87b78a12c51.jpg"
+                   alt="Сергей Лысый: Акварель из портфолио Enterclass"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Акварель из портфолио Enterclass</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="11"
+                    data-work-index="1"
+                    aria-label="Увеличить: Акварель из портфолио Enterclass">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/lisiy0012_5c87b78eefaaa.jpg"
+                   alt="Сергей Лысый: Акварель из портфолио Enterclass"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Акварель из портфолио Enterclass</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="11"
+                    data-work-index="2"
+                    aria-label="Увеличить: Акварель из портфолио Enterclass">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/lisiy0013_5c87b7aded624.jpg"
+                   alt="Сергей Лысый: Акварель из портфолио Enterclass"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Акварель из портфолио Enterclass</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="11"
+                    data-work-index="3"
+                    aria-label="Увеличить: Дополнительная работа 1">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/lysyikaterfinal61e0529deaee8_642d93899c21a.jpg"
+                   alt="Сергей Лысый: Дополнительная работа 1"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Дополнительная работа 1</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="11"
+                    data-work-index="4"
+                    aria-label="Увеличить: Дополнительная работа 2">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/lysyj-kurs_6751afe85dd65.jpg"
+                   alt="Сергей Лысый: Дополнительная работа 2"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Дополнительная работа 2</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://sergiylysyy.com/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li><li><a href="https://www.instagram.com/sergiylysyy_watercolor/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/sergey.lisiy/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Enterclass</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Enterclass: Enterclass</a></li><li><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Школа художника: Enterclass — профиль и курсы</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://enterclass.com/ru/expert/22344" target="_blank" rel="noopener noreferrer">Enterclass — профиль и курсы</a></li><li><a href="https://sergiylysyy.com/" target="_blank" rel="noopener noreferrer">Официальный сайт</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Сергей Лысый"
+           aria-label="Статус и заметки для Сергей Лысый"></div>
+    </td>
+  </tr>
+
+  <tr data-search="анна задорожная 8.0 национальный уровень рабочая пометка: подходит. travel watercolor, горы, быстрые форматы. российско-немецкая художница, специализирующаяся на горных пейзажах и путешествиях. известна как автор, преподаватель и амбассадор крупных производителей художественных материалов. бакалавриат по журналистике; магистерская степень в области искусства в oxford brookes university. в живописи начинала как самоучка. сотрудничество в качестве амбассадора с schmincke и da vinci, публикации у производителей художественных материалов. финалистка international watercolour masters и участница международных проектов. развитая образовательная инфраструктура: книги, видео, курсы на разных платформах и сильные социальные сети. instagram facebook youtube artefacto schmincke artefacto artefacto школа художника artefacto kalacheva курс не найден enterclass курс не найден художник-онлайн курс не найден jackson&#039;s art — демонстрация hahnemühle — интервью schmincke — профиль амбассадора">
+    <td class="col-number">13</td>
+    <td class="col-name">
+      <p class="name">Анна Задорожная</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.0</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Travel watercolor, горы, быстрые форматы. Российско-немецкая художница, специализирующаяся на горных пейзажах и путешествиях. Известна как автор, преподаватель и амбассадор крупных производителей художественных материалов.</td>
+    <td class="col-education">Бакалавриат по журналистике; магистерская степень в области искусства в Oxford Brookes University. В живописи начинала как самоучка.</td>
+    <td class="col-why"><ul><li>Сотрудничество в качестве амбассадора с Schmincke и da Vinci, публикации у производителей художественных материалов.</li><li>Финалистка International Watercolour Masters и участница международных проектов.</li><li>Развитая образовательная инфраструктура: книги, видео, курсы на разных платформах и сильные социальные сети.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="12"
+                    data-work-index="0"
+                    aria-label="Увеличить: St. Anton am Arlberg">
+              <img src="https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Anna-Zadorozhnaya.-St.Anton-am-Arlberg-1024x688.jpg"
+                   alt="Анна Задорожная: St. Anton am Arlberg"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/" target="_blank" rel="noopener noreferrer">St. Anton am Arlberg</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="12"
+                    data-work-index="1"
+                    aria-label="Увеличить: Горный пейзаж">
+              <img src="https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Anna-Zadorozhnaya.-3-1024x666.jpg"
+                   alt="Анна Задорожная: Горный пейзаж"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/" target="_blank" rel="noopener noreferrer">Горный пейзаж</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="12"
+                    data-work-index="2"
+                    aria-label="Увеличить: Mountains">
+              <img src="https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Zadorozhnaya-Anna_Mountains-648x1024.jpg"
+                   alt="Анна Задорожная: Mountains"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/" target="_blank" rel="noopener noreferrer">Mountains</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="12"
+                    data-work-index="3"
+                    aria-label="Увеличить: Пейзаж из интервью Hahnemuehle">
+              <img src="https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Anna-Zadorozhnaya.jpeg-688x1024.jpg"
+                   alt="Анна Задорожная: Пейзаж из интервью Hahnemuehle"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/" target="_blank" rel="noopener noreferrer">Пейзаж из интервью Hahnemuehle</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="12"
+                    data-work-index="4"
+                    aria-label="Увеличить: Snowy Mountains">
+              <img src="https://arthustle.org/assets/image/course_19/base/3b769/watercolor-snowy-mountains__fix_775x472.jpeg"
+                   alt="Анна Задорожная: Snowy Mountains"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://arthustle.org/course/watercolor-snowy-mountains" target="_blank" rel="noopener noreferrer">Snowy Mountains</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/draw_better/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/AnnaZadorozhnayaWatercolour/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://www.youtube.com/channel/UCPoPzUPWhYZNfYfB5EMbzvA" target="_blank" rel="noopener noreferrer">YouTube</a></li><li><a href="https://artefactoschool.online/course_quickwatercolor_ru" target="_blank" rel="noopener noreferrer">Artefacto</a></li><li><a href="https://www.schmincke.de/en/company/ambassadors/anna-zadorozhnaya" target="_blank" rel="noopener noreferrer">Schmincke</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://artefactoschool.online/course_quickwatercolor_ru" target="_blank" rel="noopener noreferrer">Artefacto: Artefacto</a></li><li><a href="https://artefactoschool.online/course_quickwatercolor_ru" target="_blank" rel="noopener noreferrer">Школа художника: Artefacto</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Enterclass: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://www.jacksonsart.com/blog/2019/02/08/anna-zadorozhnaya-paints-a-watercolour-mountain-landscape/" target="_blank" rel="noopener noreferrer">Jackson&#039;s Art — демонстрация</a></li><li><a href="https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/" target="_blank" rel="noopener noreferrer">Hahnemühle — интервью</a></li><li><a href="https://www.schmincke.de/en/company/ambassadors/anna-zadorozhnaya" target="_blank" rel="noopener noreferrer">Schmincke — профиль амбассадора</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Анна Задорожная"
+           aria-label="Статус и заметки для Анна Задорожная"></div>
+    </td>
+  </tr>
+
+  <tr data-search="юрий ломков 8.0 национальный уровень рабочая пометка: подходит. северный пейзаж, архитектура, свет. российский художник и акварелист с продолжительной профессиональной карьерой. основные темы — северный пейзаж, архитектура, историческая среда и передача сложного естественного освещения. ярославское художественное училище. участие в профессиональных выставках с 1970-х годов и членство в союзе художников россии. член международной ассоциации изобразительных искусств aiap при юнеско и санкт-петербургского общества акварелистов. музейные собрания и длительный преподавательский опыт; записанные курсы на enterclass и artefacto. instagram facebook enterclass artefacto enterclass enterclass artefacto artefacto школа художника artefacto kalacheva курс не найден художник-онлайн курс не найден enterclass — профиль enterclass — курс artefacto — курс">
+    <td class="col-number">14</td>
+    <td class="col-name">
+      <p class="name">Юрий Ломков</p>
+      <span class="note">национальный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">8.0</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Северный пейзаж, архитектура, свет. Российский художник и акварелист с продолжительной профессиональной карьерой. Основные темы — северный пейзаж, архитектура, историческая среда и передача сложного естественного освещения.</td>
+    <td class="col-education">Ярославское художественное училище.</td>
+    <td class="col-why"><ul><li>Участие в профессиональных выставках с 1970-х годов и членство в Союзе художников России.</li><li>Член Международной ассоциации изобразительных искусств AIAP при ЮНЕСКО и Санкт-Петербургского общества акварелистов.</li><li>Музейные собрания и длительный преподавательский опыт; записанные курсы на Enterclass и Artefacto.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="13"
+                    data-work-index="0"
+                    aria-label="Увеличить: Северный пейзаж из курса">
+              <img src="https://enterclass.com/upload/img/thumbs/source/courseimage/image/lomkovsvetpic2_6183c0c45a0f8.jpg"
+                   alt="Юрий Ломков: Северный пейзаж из курса"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/course/lomkov-kurs-sever" target="_blank" rel="noopener noreferrer">Северный пейзаж из курса</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="13"
+                    data-work-index="1"
+                    aria-label="Увеличить: Работа из курса о северном свете">
+              <img src="https://enterclass.com/upload/img/thumbs/source/courseimage/image/lomkovsvetpic1_6183c0bbcacb3.jpg"
+                   alt="Юрий Ломков: Работа из курса о северном свете"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/course/lomkov-kurs-sever" target="_blank" rel="noopener noreferrer">Работа из курса о северном свете</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="13"
+                    data-work-index="2"
+                    aria-label="Увеличить: Северный архитектурный мотив">
+              <img src="https://enterclass.com/upload/img/thumbs/source/courseimage/image/lomkovsvetpic3_6188fff06dc9c.jpg"
+                   alt="Юрий Ломков: Северный архитектурный мотив"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/course/lomkov-kurs-sever" target="_blank" rel="noopener noreferrer">Северный архитектурный мотив</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="13"
+                    data-work-index="3"
+                    aria-label="Увеличить: Горный пейзаж">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/lomkov-prrr_68b6db355f608.jpg"
+                   alt="Юрий Ломков: Горный пейзаж"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/60680" target="_blank" rel="noopener noreferrer">Горный пейзаж</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="13"
+                    data-work-index="4"
+                    aria-label="Увеличить: Цветы">
+              <img src="https://fs19.getcourse.ru/fileservice/file/download/a/165216/sc/189/h/9b2ecc8450853a13f5fff0a15a1669d0.jpg"
+                   alt="Юрий Ломков: Цветы"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://artefactoschool.online/course_north_landscapes_ru" target="_blank" rel="noopener noreferrer">Цветы</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/lomkov_art/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.facebook.com/yury.lomkov/" target="_blank" rel="noopener noreferrer">Facebook</a></li><li><a href="https://enterclass.com/ru/expert/60680" target="_blank" rel="noopener noreferrer">Enterclass</a></li><li><a href="https://artefactoschool.online/course_north_landscapes_ru" target="_blank" rel="noopener noreferrer">Artefacto</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://enterclass.com/ru/expert/60680" target="_blank" rel="noopener noreferrer">Enterclass: Enterclass</a></li><li><a href="https://artefactoschool.online/course_north_landscapes_ru" target="_blank" rel="noopener noreferrer">Artefacto: Artefacto</a></li><li><a href="https://artefactoschool.online/course_north_landscapes_ru" target="_blank" rel="noopener noreferrer">Школа художника: Artefacto</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://enterclass.com/ru/expert/60680" target="_blank" rel="noopener noreferrer">Enterclass — профиль</a></li><li><a href="https://enterclass.com/ru/course/lomkov-kurs-sever" target="_blank" rel="noopener noreferrer">Enterclass — курс</a></li><li><a href="https://artefactoschool.online/course_north_landscapes_ru" target="_blank" rel="noopener noreferrer">Artefacto — курс</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Юрий Ломков"
+           aria-label="Статус и заметки для Юрий Ломков"></div>
+    </td>
+  </tr>
+
+  <tr data-search="татьяна анисимова 7.8 профессиональный уровень рабочая пометка: подходит. массовый понятный формат, хороший стандартный продукт. петербургская художница и преподаватель, работающая с акварелью, декоративными мотивами, цветами, пейзажем и предметными постановками. хорошо адаптирует академические упражнения к понятным онлайн-урокам. санкт-петербургская государственная художественно-промышленная академия имени а. л. штиглица, кафедра керамики и стекла, выпуск 1999 года. профильное высшее образование, участие в выставках союза художников и зарубежных проектах. преподавательская деятельность с 2008 года и дополнительная подготовка в области педагогических технологий. большой набор коммерческих онлайн-курсов на enterclass; профессиональный бренд устойчив, но внешняя медийность и международное цитирование умеренные. instagram youtube enterclass enterclass enterclass школа художника enterclass — биография, портфолио и курсы kalacheva курс не найден художник-онлайн курс не найден artefacto курс не найден enterclass — биография, портфолио и курсы">
+    <td class="col-number">15</td>
+    <td class="col-name">
+      <p class="name">Татьяна Анисимова</p>
+      <span class="note">профессиональный уровень</span>
+    </td>
+    <td class="col-rating">
+      <span class="rating">7.8</span>
+      <span class="level">/ 10</span>
+    </td>
+    <td class="col-summary">Рабочая пометка: Подходит. Массовый понятный формат, хороший стандартный продукт. Петербургская художница и преподаватель, работающая с акварелью, декоративными мотивами, цветами, пейзажем и предметными постановками. Хорошо адаптирует академические упражнения к понятным онлайн-урокам.</td>
+    <td class="col-education">Санкт-Петербургская государственная художественно-промышленная академия имени А. Л. Штиглица, кафедра керамики и стекла, выпуск 1999 года.</td>
+    <td class="col-why"><ul><li>Профильное высшее образование, участие в выставках Союза художников и зарубежных проектах.</li><li>Преподавательская деятельность с 2008 года и дополнительная подготовка в области педагогических технологий.</li><li>Большой набор коммерческих онлайн-курсов на Enterclass; профессиональный бренд устойчив, но внешняя медийность и международное цитирование умеренные.</li></ul></td>
+    <td class="col-works">
+      <div class="gallery">
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="14"
+                    data-work-index="0"
+                    aria-label="Увеличить: Акварель из портфолио Enterclass">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/0zdo7nxeans_5eff1022df8b7.jpg"
+                   alt="Татьяна Анисимова: Акварель из портфолио Enterclass"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Акварель из портфолио Enterclass</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="14"
+                    data-work-index="1"
+                    aria-label="Увеличить: Акварель из портфолио Enterclass">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/5d4mbxlkbfi_5eff102620af3.jpg"
+                   alt="Татьяна Анисимова: Акварель из портфолио Enterclass"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Акварель из портфолио Enterclass</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="14"
+                    data-work-index="2"
+                    aria-label="Увеличить: Акварель из портфолио Enterclass">
+              <img src="https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/5k5uhdlxgz8_5eff102775f05.jpg"
+                   alt="Татьяна Анисимова: Акварель из портфолио Enterclass"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Акварель из портфолио Enterclass</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="14"
+                    data-work-index="3"
+                    aria-label="Увеличить: Порт">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/anisimova-kurs_67b3029d15577.jpg"
+                   alt="Татьяна Анисимова: Порт"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Порт</a></span>
+          </div>
+        
+          <div class="work">
+            <button type="button"
+                    data-artist-index="14"
+                    data-work-index="4"
+                    aria-label="Увеличить: Городской мотив">
+              <img src="https://enterclass.com/upload/img/thumbs/catalog_item/course/image/oblozka-kursa-svet-v-gorodskom-pejzaze_677a4b507724a.jpg"
+                   alt="Татьяна Анисимова: Городской мотив"
+                   loading="lazy"
+                   onerror="this.closest('.work').classList.add('broken');">
+            </button>
+            <span><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Городской мотив</a></span>
+          </div>
+        
+      </div>
+    </td>
+    <td class="col-links"><ul class="links-list"><li><a href="https://www.instagram.com/tatianaanisimova6056/" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.youtube.com/channel/UC1dLl38tdxVo3b1DQWA3L9Q/videos" target="_blank" rel="noopener noreferrer">YouTube</a></li><li><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Enterclass</a></li></ul></td>
+    <td class="col-schools"><ul class="links-list schools"><li><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Enterclass: Enterclass</a></li><li><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Школа художника: Enterclass — биография, портфолио и курсы</a></li><li class="absent">Kalacheva: курс не найден</li><li class="absent">Художник-онлайн: курс не найден</li><li class="absent">Artefacto: курс не найден</li></ul></td>
+    <td class="col-sources"><ul class="sources-list"><li><a href="https://enterclass.com/ru/expert/51430" target="_blank" rel="noopener noreferrer">Enterclass — биография, портфолио и курсы</a></li></ul></td>
+    <td class="col-notes">
+      <div class="notes-cell"
+           contenteditable="true"
+           data-note-key="Татьяна Анисимова"
+           aria-label="Статус и заметки для Татьяна Анисимова"></div>
+    </td>
+  </tr>
+</tbody>
+      </table>
+    </div>
+  </div>
+
+  <dialog id="viewer">
+    <div class="lightbox">
+      <div class="lightbox-head">
+        <p class="lightbox-title" id="viewerTitle"></p>
+        <div class="lightbox-actions">
+          <button type="button" id="openSource">Источник</button>
+          <button type="button" id="closeViewer" aria-label="Закрыть">×</button>
+        </div>
+      </div>
+      <div class="lightbox-body">
+        <button class="nav" type="button" id="prevWork" aria-label="Предыдущее изображение">‹</button>
+        <img id="viewerImage" alt="">
+        <button class="nav" type="button" id="nextWork" aria-label="Следующее изображение">›</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const artists = [{"name":"Константин Стерхов","score":"8.6","level":"национальный уровень","summary":"Рабочая пометка: Эталон. Курсы у других школ есть, переговорно сложный. Российский акварелист, автор книг и международный преподаватель. Основные направления — морской и городской пейзаж, портрет, световые состояния и технически сложная работа по влажной бумаге.","education":"Удмуртский государственный университет; Санкт-Петербургский академический институт живописи, скульптуры и архитектуры имени И. Е. Репина, выпуск 1997 года.","why":["Членство в российских и европейских профессиональных акварельных объединениях.","Международные выставки, фестивали и мастер-классы; публикации и сотрудничество с производителями художественных материалов.","Сильная образовательная линия: книги, видеокурсы, многочисленные онлайн-программы и стабильная профильная аудитория."],"works":[{"title":"Daffodils","image":"https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-daffodils.jpg","page":"https://danielsmith.com/konstantin-sterkhov/"},{"title":"Horse","image":"https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-horse.jpg","page":"https://danielsmith.com/konstantin-sterkhov/"},{"title":"Fountain","image":"https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-fountain.jpg","page":"https://danielsmith.com/konstantin-sterkhov/"},{"title":"Traveler","image":"https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-traveler.jpg","page":"https://danielsmith.com/konstantin-sterkhov/"},{"title":"Two Women","image":"https://danielsmith.com/wp-content/uploads/2022/03/sterkhov-two-women.jpg","page":"https://danielsmith.com/konstantin-sterkhov/"}],"social":[{"label":"Официальный сайт","url":"https://www.konstantinsterkhov.com/"},{"label":"Instagram","url":"https://www.instagram.com/sterkhovart/"},{"label":"Facebook","url":"https://www.facebook.com/sterkhovart/"},{"label":"YouTube","url":"https://www.youtube.com/@sterkhovart"},{"label":"Enterclass","url":"https://enterclass.com/expert/22727"}],"sources":[{"label":"Daniel Smith — профиль художника","url":"https://danielsmith.com/konstantin-sterkhov/"},{"label":"Музей Эрарта","url":"https://www.erarta.com/ru/calendar/exhibitions/detail/271219/"},{"label":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/konstantin-sterkhov"}],"number":1,"schools":[{"label":"Enterclass","detail":"Enterclass","url":"https://enterclass.com/expert/22727","absent":false},{"label":"Watercolor Academy","detail":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/konstantin-sterkhov","absent":false},{"label":"Школа художника","detail":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/konstantin-sterkhov","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Сергей Курбатов","score":"8.5","level":"национальный уровень","summary":"Рабочая пометка: Эталон. Курсы у других школ есть, переговорно сложный. Российский акварелист, автор книги «Акварельный джаз» и один из наиболее опытных преподавателей в списке. Основные темы — городской пейзаж, архитектура, свет и пленэрная живопись.","education":"Высшее художественное образование в Ленинградском высшем художественно-промышленном училище имени В. И. Мухиной, выпуск 1993 года.","why":["Международные выставки, пленэры и профессиональные проекты в Европе и Азии.","Произведения представлены в музейных, галерейных и частных собраниях.","Сильная коммерческая готовность: преподавание с 2010 года, собственная образовательная система и более ста записанных уроков."],"works":[{"title":"«Солнечный день в старом парке»","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/004-solnecnyj-den-v-starom-parke1_6718d0150e7b3.jpg","page":"https://enterclass.com/ru/expert/245"},{"title":"«Причал в Специи»","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/prical-v-specese_6718d03c61e9e.jpg","page":"https://enterclass.com/ru/expert/245"},{"title":"«Первый снег»","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/pervyj-sneg_6718d048441ed.jpg","page":"https://enterclass.com/ru/expert/245"},{"title":"Дополнительная работа 1","image":"https://kurbatovart.ru/uploads/s/2/f/d/2fd1hlkrz888/img/full_5RAAHiC5.jpg","page":"https://kurbatovart.ru/"},{"title":"Дополнительная работа 2","image":"https://kurbatovart.ru/uploads/s/2/f/d/2fd1hlkrz888/img/full_0efttPGA.jpg","page":"https://kurbatovart.ru/"}],"social":[{"label":"Официальный сайт и школа","url":"https://kurbatovart.ru/"},{"label":"Instagram","url":"https://www.instagram.com/sergei.kurbatov/"},{"label":"Enterclass","url":"https://enterclass.com/ru/expert/245"}],"sources":[{"label":"Официальный сайт","url":"https://kurbatovart.ru/"},{"label":"Enterclass — биография и курсы","url":"https://enterclass.com/ru/expert/245"}],"number":2,"schools":[{"label":"Enterclass","detail":"Enterclass","url":"https://enterclass.com/ru/expert/245","absent":false},{"label":"Школа художника","detail":"Официальный сайт и школа","url":"https://kurbatovart.ru/","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Виктория Пришедько","score":"8.5","level":"национальный уровень","summary":"Рабочая пометка: Включаем. Топ-акварелист, сильная международная репутация. Записанный онлайн-курс не подтвержден — это может быть плюсом, если удастся договориться. Молдавско-немецкая акварелистка, известная эмоциональными городскими и пейзажными композициями по мокрой бумаге. Работы строятся на цветовых растеканиях, контрастном свете и движении.","education":"Художественная и архитектурная подготовка в Киеве; дальнейшее профессиональное развитие и работа в Германии.","why":["Устойчивая известность в европейском акварельном сообществе и регулярные международные выставки.","Мастер-классы в разных странах, участие в профильных фестивалях и публикациях.","Высокая узнаваемость техники и стабильная международная аудитория внутри профессионального акварельного сегмента."],"works":[{"title":"Акварель из профессионального портфолио","image":"https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-1.jpg","page":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"},{"title":"Акварель из профессионального портфолио","image":"https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-2.jpg","page":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"},{"title":"Акварель из профессионального портфолио","image":"https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-3.jpg","page":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"},{"title":"Дополнительная работа 1","image":"https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-4.jpg","page":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"},{"title":"Дополнительная работа 2","image":"https://watercoloracademy.com/images/watercolor-masters/viktoria-prischedko-5.jpg","page":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/viktoriaprischedko/"},{"label":"Facebook","url":"https://www.facebook.com/prischedko/"},{"label":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"}],"sources":[{"label":"Watercolor Academy — профиль","url":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko"},{"label":"Официальная страница Facebook","url":"https://www.facebook.com/prischedko/"}],"number":3,"schools":[{"label":"Watercolor Academy","detail":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko","absent":false},{"label":"Школа художника","detail":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/viktoria-prischedko","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Ольга Литвиненко","score":"8.5","level":"национальный уровень","summary":"Рабочая пометка: Включаем по той же логике. Сильный профессиональный уровень, академическая база. Подтвержденная коммерческая онлайн-линейка не найдена. Петербургская художница-график и акварелист. Работает с архитектурой, городским светом, пейзажем и камерными сюжетами; её сильная сторона — академическая школа и профессиональная выставочная среда.","education":"Факультет графики Санкт-Петербургского академического института имени И. Е. Репина; последующая аспирантская подготовка.","why":["Академическое образование, членство в профессиональных российских и международных акварельных объединениях.","Участие и награды на международных выставках в Европе и Азии; присутствие работ в музейных и частных собраниях.","Рейтинг держится преимущественно на профессиональном авторитете и международных выставках; коммерческая онлайн-инфраструктура выражена слабее, чем у ряда других кандидатов."],"works":[{"title":"«Прага»","image":"https://www.art-spb.ru/upload/good_image/11064_small.jpg","page":"https://www.art-spb.ru/artist/605","fullImage":"https://www.art-spb.ru/upload/good_image/11064.jpg"},{"title":"«Дождливый день»","image":"https://www.art-spb.ru/upload/good_image/21892_small.jpg","page":"https://www.art-spb.ru/artist/605","fullImage":"https://www.art-spb.ru/upload/good_image/21892.jpg"},{"title":"«Петербург»","image":"https://www.art-spb.ru/upload/good_image/21891_small.jpg","page":"https://www.art-spb.ru/artist/605","fullImage":"https://www.art-spb.ru/upload/good_image/21891.jpg"},{"title":"Дополнительная работа 1","image":"https://www.art-spb.ru/upload/good_image/14960_small.jpg","page":"https://www.art-spb.ru/artist/605","fullImage":"https://www.art-spb.ru/upload/good_image/14960.jpg"},{"title":"Дополнительная работа 2","image":"https://www.art-spb.ru/upload/good_image/12262_small.jpg","page":"https://www.art-spb.ru/artist/605","fullImage":"https://www.art-spb.ru/upload/good_image/12262.jpg"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/olga1_litvinenko/"},{"label":"Facebook","url":"https://www.facebook.com/olga.litvinenko.watercolor.artist/"},{"label":"Профессиональный профиль","url":"https://kodakvareli.ru/olga-litvinenko"}],"sources":[{"label":"ART-SPB — профиль и работы","url":"https://www.art-spb.ru/artist/605"},{"label":"Мир современной акварели","url":"https://kodakvareli.ru/olga-litvinenko"}],"number":4,"schools":[{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Екатерина Сава","score":"8.4","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Есть опыт онлайн-курсов. Белорусская акварелистка, график и архитектор, известная ботаническими и цветочными композициями. Активно участвует в международном акварельном движении и преподаёт онлайн.","education":"Профессиональная подготовка связана с архитектурой, графикой и изобразительным искусством; точное наименование учебного заведения в проверенных открытых профилях указано непоследовательно.","why":["Членство в American Watercolor Society и National Watercolor Society, руководство белорусским отделением IWS.","Международные выставки, конкурсы и профессиональные награды.","Большой опыт проведения мастер-классов и записи коммерческих онлайн-курсов для международной аудитории."],"works":[{"title":"Цветочная акварель из курса Artefacto","image":"https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/285045d4d6ec950087f60fcad9fd9926.jpg/s/s1200x/a/165216/sc/166","page":"https://artefactoschool.online/Course_flowers_sava"},{"title":"Цветочная акварель из курса Artefacto","image":"https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/7559cd16a479b68459c329c9c56413ed.jpg/s/s1200x/a/165216/sc/75","page":"https://artefactoschool.online/Course_flowers_sava"},{"title":"Цветочная акварель","image":"https://fs-thb02.getcourse.ru/fileservice/file/thumbnail/h/fb1e5b4a003d2339ff2f18bba46e9b01.jpg/s/s1200x/a/165216/sc/271","page":"https://artefactoschool.online/Watercolor_in_flowers_m"},{"title":"Цветочная акварель","image":"https://fs-thb01.getcourse.ru/fileservice/file/thumbnail/h/b076d0e7efeafccd4e7e44419ad13eee.jpg/s/s1200x/a/165216/sc/483","page":"https://artefactoschool.online/Watercolor_in_flowers_m"},{"title":"Цветочная акварель","image":"https://fs-thb03.getcourse.ru/fileservice/file/thumbnail/h/a1a1692b42b4b3834065030935b05e25.jpg/s/s1200x/a/165216/sc/441","page":"https://artefactoschool.online/Watercolor_in_flowers_m"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/ekaterina_sava_art/"},{"label":"Facebook","url":"https://www.facebook.com/ekaterina.sava.slon/"},{"label":"Курс Artefacto","url":"https://artefactoschool.online/Course_flowers_sava"}],"sources":[{"label":"Artefacto — курс и биография","url":"https://artefactoschool.online/Course_flowers_sava"},{"label":"Instagram художницы","url":"https://www.instagram.com/ekaterina_sava_art/"}],"number":5,"schools":[{"label":"Artefacto","detail":"Курс Artefacto","url":"https://artefactoschool.online/Course_flowers_sava","absent":false},{"label":"Школа художника","detail":"Курс Artefacto","url":"https://artefactoschool.online/Course_flowers_sava","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Игорь Сава","score":"8.4","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Есть опыт онлайн-уроков / платформ. Молдавско-итальянский акварелист, живущий и работающий в Риме. Основные направления — архитектура, городской пейзаж, море и динамичные пространственные композиции.","education":"Художественная школа имени И. Репина в Кишинёве; диплом в области графического дизайна; дальнейшее обучение изобразительному искусству в Риме.","why":["Основатель собственной акварельной школы в Риме и востребованный международный преподаватель.","Регулярные зарубежные выставки, фестивали, конкурсы и мастер-классы.","Хорошая адаптация метода к онлайн-обучению и узнаваемый архитектурно-пейзажный стиль."],"works":[{"title":"Акварель из профессионального портфолио","image":"https://watercoloracademy.com/images/watercolor-masters/igor-sava-1.jpg","page":"https://watercoloracademy.com/watercolor-masters/igor-sava"},{"title":"Акварель из профессионального портфолио","image":"https://watercoloracademy.com/images/watercolor-masters/igor-sava-2.jpg","page":"https://watercoloracademy.com/watercolor-masters/igor-sava"},{"title":"Акварель из профессионального портфолио","image":"https://watercoloracademy.com/images/watercolor-masters/igor-sava-3.jpg","page":"https://watercoloracademy.com/watercolor-masters/igor-sava"},{"title":"Венецианский мотив","image":"https://watercoloracademy.com/images/watercolor-masters/igor-sava-4.jpg","page":"https://watercoloracademy.com/watercolor-masters/igor-sava"},{"title":"Морской город","image":"https://watercoloracademy.com/images/watercolor-masters/igor-sava-6.jpg","page":"https://watercoloracademy.com/watercolor-masters/igor-sava"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/igor_sava_art/"},{"label":"Terracotta","url":"https://terracotta.art/artist/igor-sava"},{"label":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/igor-sava"}],"sources":[{"label":"Watercolor Academy — профиль","url":"https://watercoloracademy.com/watercolor-masters/igor-sava"},{"label":"Terracotta — биография","url":"https://terracotta.art/artist/igor-sava"}],"number":6,"schools":[{"label":"Watercolor Academy","detail":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/igor-sava","absent":false},{"label":"Школа художника","detail":"Watercolor Academy","url":"https://watercoloracademy.com/watercolor-masters/igor-sava","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Сергей Темерев","score":"8.4","level":"национальный уровень","summary":"Рабочая пометка: Включаем. Сильный профессиональный статус. Скорее надо проверять готовность к записи курса. Петербургский художник, архитектор и преподаватель. Один из наиболее профессионально устойчивых российских авторов морской и городской станковой акварели.","education":"Средняя художественная школа имени Б. В. Иогансона; архитектурный факультет Института живописи, скульптуры и архитектуры имени И. Е. Репина.","why":["Преподавательский статус в Академии имени А. Л. Штиглица и членство в профессиональных союзах России и Европы.","Участие более чем в тридцати международных выставках и биеннале.","Высокий профессиональный авторитет в станковой акварели; аудиторная и коммерческая инфраструктура умереннее, чем у самых медийных преподавателей."],"works":[{"title":"«За пару часов до отлива»","image":"https://art-mx.ru/gallery/preview/430/27787.jpg","page":"https://art-mx.ru/temerev-sg/"},{"title":"«Синева и золото реки Фонтанки 3»","image":"https://art-mx.ru/gallery/preview/430/27789.jpg","page":"https://art-mx.ru/temerev-sg/"},{"title":"«Электрический допинг города 3»","image":"https://art-mx.ru/gallery/preview/430/27783.jpg","page":"https://art-mx.ru/temerev-sg/"},{"title":"Дополнительная работа 1","image":"https://art-mx.ru/gallery/preview/430/5988.jpg","page":"https://art-mx.ru/temerev-sg/"},{"title":"Дополнительная работа 2","image":"https://art-mx.ru/gallery/preview/430/6654.jpg","page":"https://art-mx.ru/temerev-sg/"}],"social":[{"label":"Официальный сайт","url":"https://temerevart.com/"},{"label":"Instagram","url":"https://www.instagram.com/_sergestus_/"},{"label":"Facebook","url":"https://www.facebook.com/sergey.temerev.watercolor/"},{"label":"YouTube","url":"https://www.youtube.com/c/SergeyTemerev/videos"}],"sources":[{"label":"Официальный сайт","url":"https://temerevart.com/"},{"label":"ART-MX — профиль и работы","url":"https://art-mx.ru/temerev-sg/"}],"number":7,"schools":[{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Анастасия Кустова","score":"8.4","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Сильный курсный кандидат. Российская акварелистка и преподаватель, специализирующаяся на горных и природных пейзажах. Построила сильный образовательный бренд вокруг пленэрных путешествий и техники передачи пространства.","education":"Высшее инженерное образование в МГТУ имени Н. Э. Баумана; профессиональный художественный путь выстроен через самостоятельную практику, мастерские, пленэры и выставочную деятельность.","why":["Международные биеннале, награды, работа в жюри и членство в профессиональных акварельных объединениях.","Автор книги «Акварель для взрослых» с крупным тиражом.","Десятки пленэрных туров и мастер-классов во многих странах, развитые онлайн-курсы, сайт и YouTube."],"works":[{"title":"Городской мотив","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/kustovanepal261a53352e05b3_62beaed30de54.jpg","page":"https://enterclass.com/ru/expert/2914"},{"title":"Лодка","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/kustovalodkaafisha_61b9eb4a9084a.jpg","page":"https://enterclass.com/ru/expert/2914"},{"title":"Огонь","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/kustovastihiikoster61a5225e8dcd8_625a6ba499e51.jpg","page":"https://enterclass.com/ru/expert/2914"},{"title":"Ретро-автомобиль","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/afisa-vtomobil-kustova_659a5ecd90a2f.jpg","page":"https://enterclass.com/ru/expert/2914"},{"title":"Исаакиевский собор","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/80032_6238237349618.jpg","page":"https://enterclass.com/ru/expert/2914"}],"social":[{"label":"Официальный сайт","url":"https://art-kustova.ru/"},{"label":"Instagram","url":"https://www.instagram.com/kustova_anastasia/"},{"label":"YouTube","url":"https://www.youtube.com/c/AnastasiaKustova"},{"label":"Enterclass","url":"https://enterclass.com/ru/expert/2914"}],"sources":[{"label":"Официальный сайт","url":"https://art-kustova.ru/"},{"label":"Enterclass — профиль и курсы","url":"https://enterclass.com/ru/expert/2914"}],"number":8,"schools":[{"label":"Enterclass","detail":"Enterclass","url":"https://enterclass.com/ru/expert/2914","absent":false},{"label":"Школа художника","detail":"Enterclass — профиль и курсы","url":"https://enterclass.com/ru/expert/2914","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Елена Базанова","score":"8.3","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Есть опыт онлайн-курсов. Петербургская художница-график, один из наиболее узнаваемых российских мастеров ботанической и предметной акварели. Известна сложными многослойными натюрмортами и детальным наблюдением натуры.","education":"Средняя художественная школа имени Б. В. Иогансона; факультет книжной графики Института живописи, скульптуры и архитектуры имени И. Е. Репина.","why":["Член Союза художников и Санкт-Петербургского общества акварелистов; многолетняя выставочная деятельность и музейные собрания.","Сильная публикационная и профессиональная репутация в ботанической и предметной акварели.","Развитая образовательная история: многочисленные курсы на Lectoroom, книги, демонстрации и несколько тысяч учеников."],"works":[{"title":"Дыня","image":"https://lectoroom.com/files/modules/courses/877/common/screenshot_2024-09-06_at_10_26_12.png","page":"https://lectoroom.com/teachers/elena-bazanova"},{"title":"Вишня","image":"https://lectoroom.com/files/modules/courses/870/common/1e873b8bd69b88d32b57cc6bd2a6eb1a.png","page":"https://lectoroom.com/teachers/elena-bazanova"},{"title":"Цветы","image":"https://lectoroom.com/files/modules/courses/867/common/screenshot_2024-06-18_at_17_56_21.png","page":"https://lectoroom.com/teachers/elena-bazanova"},{"title":"Подсолнух","image":"https://lectoroom.com/files/modules/courses/818/common/portfolio-1695297722-1695298434.jpeg","page":"https://lectoroom.com/teachers/elena-bazanova"},{"title":"Овощной натюрморт","image":"https://lectoroom.com/files/modules/courses/827/common/48c180a0d460d805e4d55b1c9790d240.jpg","page":"https://lectoroom.com/teachers/elena-bazanova"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/elenabazanova_art/"},{"label":"YouTube","url":"https://www.youtube.com/@elenabazanova_art"},{"label":"Lectoroom","url":"https://lectoroom.com/teachers/elena-bazanova"},{"label":"Профессиональный профиль","url":"https://world-watercolor.ru/bazanova24"}],"sources":[{"label":"Lectoroom — профиль и курсы","url":"https://lectoroom.com/teachers/elena-bazanova"},{"label":"Мир акварели — биография","url":"https://world-watercolor.ru/bazanova24"}],"number":9,"schools":[{"label":"Lectoroom","detail":"Lectoroom","url":"https://lectoroom.com/teachers/elena-bazanova","absent":false},{"label":"Школа художника","detail":"Lectoroom — профиль и курсы","url":"https://lectoroom.com/teachers/elena-bazanova","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Евгений Кисничан","score":"8.2","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Международный акварельный уровень, есть обучающая активность. Молдавский акварелист, известный атмосферными городскими и сельскими пейзажами, мягким светом и свободной тональной живописью. На международном рынке использует имя Eugen Chisnicean.","education":"Детская художественная школа; Институт искусств в Кишинёве, направления интерьерного дизайна и архитектуры; Академия искусств Кишинёва, живопись, выпуск 2012 года.","why":["Регулярное участие в международных акварельных выставках и статус приглашённого художника зарубежных салонов.","Мастер-классы и пленэры в разных странах Европы и за её пределами.","Узнаваемая пейзажная манера и международно ориентированные сайт и социальные сети."],"works":[{"title":"Avrig","image":"https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/1714992996570-J35RI3J2XZ235PVVZNCV/Avrig.jpg?format=1500w","page":"https://www.eugenchisnicean.com/portfolio"},{"title":"Winter in Carpathians","image":"https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/533f0c39-a5af-4cdc-a3b9-334a6b158961/Winter+in+Carpathians.jpg?format=1500w","page":"https://www.eugenchisnicean.com/portfolio"},{"title":"Mallorca","image":"https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/1714992231869-357WY4ZXYI5IZV2IRWK5/Mallorca.jpg?format=1500w","page":"https://www.eugenchisnicean.com/portfolio"},{"title":"Carnac","image":"https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/1716115209499-0BDNLV0COKZKWUJK027C/Carnac.jpg?format=1500w","page":"https://www.eugenchisnicean.com/portfolio"},{"title":"Landscape","image":"https://images.squarespace-cdn.com/content/v1/6552311f5b495f3031466659/d189af5c-9824-47f9-82fa-382861a5ad18/DSC05570.jpg?format=1500w","page":"https://www.eugenchisnicean.com/portfolio"}],"social":[{"label":"Официальный сайт","url":"https://www.eugenchisnicean.com/"},{"label":"Instagram","url":"https://www.instagram.com/eugen.chisnicean/"},{"label":"Facebook","url":"https://www.facebook.com/chisnicean"},{"label":"YouTube","url":"https://www.youtube.com/channel/UC_QumR2cIvMk2w94EIyrwCg"}],"sources":[{"label":"Официальная биография","url":"https://www.eugenchisnicean.com/about"},{"label":"Официальное портфолио","url":"https://www.eugenchisnicean.com/portfolio"}],"number":10,"schools":[{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Юлия Барминова","score":"8.1","level":"международный уровень","summary":"Рабочая пометка: Подходит. Сильный коммерческий кандидат, море / travel watercolor. Российская акварелистка и преподаватель, специализирующаяся на море, волнах, береговой архитектуре и портовых городах. Построила один из наиболее заметных образовательных брендов в нише морской акварели.","education":"Имеет архитектурную подготовку; точное учебное заведение в открытых образовательных профилях указывается не во всех версиях биографии.","why":["Узкая и легко считываемая специализация на морской акварели, подкреплённая большим объёмом путешествий и натурного материала.","Многочисленные очные мастер-классы, онлайн-курсы и международные образовательные проекты.","Развитые Instagram, YouTube, Patreon и продукты на Lectoroom; высокая коммерческая пригодность для школы."],"works":[{"title":"Морская работа","image":"https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592889614-E4ZON6TUJBN6QMBW1MDL/PiP+-+Julia+B+-+Works+-+Site_4.png","page":"https://www.paint-in-portugal.com/tiedb/julia-barminova"},{"title":"Морская работа","image":"https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592946450-DJTIGB9NBTFGEW4U1IFF/PiP+-+Julia+B+-+Works+-+Site_5.png","page":"https://www.paint-in-portugal.com/tiedb/julia-barminova"},{"title":"Морская работа","image":"https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592897119-X06LLZD9PE8VD59K2LI9/PiP+-+Julia+B+-+Works+-+Site_6.jpg","page":"https://www.paint-in-portugal.com/tiedb/julia-barminova"},{"title":"Морская работа","image":"https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592905444-V3H9LA7I79OPKAHEAPUD/PiP+-+Julia+B+-+Works+-+Site_7.jpg","page":"https://www.paint-in-portugal.com/tiedb/julia-barminova"},{"title":"Морская работа","image":"https://images.squarespace-cdn.com/content/v1/5377840fe4b0e8c9b2adf441/1543592909722-XIMJLL05LD1M3O4A03B0/PiP+-+Julia+B+-+Works+-+Site_8.jpg","page":"https://www.paint-in-portugal.com/tiedb/julia-barminova"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/juliabarminova/"},{"label":"Facebook","url":"https://www.facebook.com/juliabarminova/"},{"label":"YouTube","url":"https://www.youtube.com/@juliabarminova"},{"label":"Patreon","url":"https://www.patreon.com/juliabarminova"},{"label":"Lectoroom","url":"https://lectoroom.com/courses/seafoam"}],"sources":[{"label":"Lectoroom — морская пена","url":"https://lectoroom.com/courses/seafoam"},{"label":"Lectoroom — Венеция","url":"https://lectoroom.com/courses/venice"},{"label":"Instagram художницы","url":"https://www.instagram.com/juliabarminova/"}],"number":11,"schools":[{"label":"Lectoroom","detail":"Lectoroom","url":"https://lectoroom.com/courses/seafoam","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Сергей Лысый","score":"8.0","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Есть Enterclass, понятный формат. Акварелист, живущий в Литве, специализируется на городских видах, воде, отражениях и свободной пленэрной живописи. Активно преподаёт и сотрудничает с российскими онлайн-платформами.","education":"Обучался на художественно-графическом факультете Одесского педагогического института; дальнейшее развитие связано с самостоятельной практикой в Клайпеде и международными мастер-классами.","why":["Персональные выставки и участие в международных конкурсах в Европе, Азии, Америке и Австралии.","Регулярная преподавательская практика с 2014 года.","Подтверждённые коммерческие онлайн-курсы на Enterclass и собственная международная интернет-аудитория."],"works":[{"title":"Акварель из портфолио Enterclass","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/lisiy001_5c87b78a12c51.jpg","page":"https://enterclass.com/ru/expert/22344"},{"title":"Акварель из портфолио Enterclass","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/lisiy0012_5c87b78eefaaa.jpg","page":"https://enterclass.com/ru/expert/22344"},{"title":"Акварель из портфолио Enterclass","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/lisiy0013_5c87b7aded624.jpg","page":"https://enterclass.com/ru/expert/22344"},{"title":"Дополнительная работа 1","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/lysyikaterfinal61e0529deaee8_642d93899c21a.jpg","page":"https://enterclass.com/ru/expert/22344"},{"title":"Дополнительная работа 2","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/lysyj-kurs_6751afe85dd65.jpg","page":"https://enterclass.com/ru/expert/22344"}],"social":[{"label":"Официальный сайт","url":"https://sergiylysyy.com/"},{"label":"Instagram","url":"https://www.instagram.com/sergiylysyy_watercolor/"},{"label":"Facebook","url":"https://www.facebook.com/sergey.lisiy/"},{"label":"Enterclass","url":"https://enterclass.com/ru/expert/22344"}],"sources":[{"label":"Enterclass — профиль и курсы","url":"https://enterclass.com/ru/expert/22344"},{"label":"Официальный сайт","url":"https://sergiylysyy.com/"}],"number":12,"schools":[{"label":"Enterclass","detail":"Enterclass","url":"https://enterclass.com/ru/expert/22344","absent":false},{"label":"Школа художника","detail":"Enterclass — профиль и курсы","url":"https://enterclass.com/ru/expert/22344","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]},{"name":"Анна Задорожная","score":"8.0","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Travel watercolor, горы, быстрые форматы. Российско-немецкая художница, специализирующаяся на горных пейзажах и путешествиях. Известна как автор, преподаватель и амбассадор крупных производителей художественных материалов.","education":"Бакалавриат по журналистике; магистерская степень в области искусства в Oxford Brookes University. В живописи начинала как самоучка.","why":["Сотрудничество в качестве амбассадора с Schmincke и da Vinci, публикации у производителей художественных материалов.","Финалистка International Watercolour Masters и участница международных проектов.","Развитая образовательная инфраструктура: книги, видео, курсы на разных платформах и сильные социальные сети."],"works":[{"title":"St. Anton am Arlberg","image":"https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Anna-Zadorozhnaya.-St.Anton-am-Arlberg-1024x688.jpg","page":"https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/"},{"title":"Горный пейзаж","image":"https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Anna-Zadorozhnaya.-3-1024x666.jpg","page":"https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/"},{"title":"Mountains","image":"https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Zadorozhnaya-Anna_Mountains-648x1024.jpg","page":"https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/"},{"title":"Пейзаж из интервью Hahnemuehle","image":"https://blog.hahnemuehle.com/en/wp-content/uploads/sites/12/2022/02/Anna-Zadorozhnaya.jpeg-688x1024.jpg","page":"https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/"},{"title":"Snowy Mountains","image":"https://arthustle.org/assets/image/course_19/base/3b769/watercolor-snowy-mountains__fix_775x472.jpeg","page":"https://arthustle.org/course/watercolor-snowy-mountains"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/draw_better/"},{"label":"Facebook","url":"https://www.facebook.com/AnnaZadorozhnayaWatercolour/"},{"label":"YouTube","url":"https://www.youtube.com/channel/UCPoPzUPWhYZNfYfB5EMbzvA"},{"label":"Artefacto","url":"https://artefactoschool.online/course_quickwatercolor_ru"},{"label":"Schmincke","url":"https://www.schmincke.de/en/company/ambassadors/anna-zadorozhnaya"}],"sources":[{"label":"Jackson's Art — демонстрация","url":"https://www.jacksonsart.com/blog/2019/02/08/anna-zadorozhnaya-paints-a-watercolour-mountain-landscape/"},{"label":"Hahnemühle — интервью","url":"https://blog.hahnemuehle.com/en/travelling-is-the-main-source-of-inspiration-for-artist-anna-zadorozhnaya/"},{"label":"Schmincke — профиль амбассадора","url":"https://www.schmincke.de/en/company/ambassadors/anna-zadorozhnaya"}],"number":13,"schools":[{"label":"Artefacto","detail":"Artefacto","url":"https://artefactoschool.online/course_quickwatercolor_ru","absent":false},{"label":"Школа художника","detail":"Artefacto","url":"https://artefactoschool.online/course_quickwatercolor_ru","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Enterclass","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Юрий Ломков","score":"8.0","level":"национальный уровень","summary":"Рабочая пометка: Подходит. Северный пейзаж, архитектура, свет. Российский художник и акварелист с продолжительной профессиональной карьерой. Основные темы — северный пейзаж, архитектура, историческая среда и передача сложного естественного освещения.","education":"Ярославское художественное училище.","why":["Участие в профессиональных выставках с 1970-х годов и членство в Союзе художников России.","Член Международной ассоциации изобразительных искусств AIAP при ЮНЕСКО и Санкт-Петербургского общества акварелистов.","Музейные собрания и длительный преподавательский опыт; записанные курсы на Enterclass и Artefacto."],"works":[{"title":"Северный пейзаж из курса","image":"https://enterclass.com/upload/img/thumbs/source/courseimage/image/lomkovsvetpic2_6183c0c45a0f8.jpg","page":"https://enterclass.com/ru/course/lomkov-kurs-sever"},{"title":"Работа из курса о северном свете","image":"https://enterclass.com/upload/img/thumbs/source/courseimage/image/lomkovsvetpic1_6183c0bbcacb3.jpg","page":"https://enterclass.com/ru/course/lomkov-kurs-sever"},{"title":"Северный архитектурный мотив","image":"https://enterclass.com/upload/img/thumbs/source/courseimage/image/lomkovsvetpic3_6188fff06dc9c.jpg","page":"https://enterclass.com/ru/course/lomkov-kurs-sever"},{"title":"Горный пейзаж","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/lomkov-prrr_68b6db355f608.jpg","page":"https://enterclass.com/ru/expert/60680"},{"title":"Цветы","image":"https://fs19.getcourse.ru/fileservice/file/download/a/165216/sc/189/h/9b2ecc8450853a13f5fff0a15a1669d0.jpg","page":"https://artefactoschool.online/course_north_landscapes_ru"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/lomkov_art/"},{"label":"Facebook","url":"https://www.facebook.com/yury.lomkov/"},{"label":"Enterclass","url":"https://enterclass.com/ru/expert/60680"},{"label":"Artefacto","url":"https://artefactoschool.online/course_north_landscapes_ru"}],"sources":[{"label":"Enterclass — профиль","url":"https://enterclass.com/ru/expert/60680"},{"label":"Enterclass — курс","url":"https://enterclass.com/ru/course/lomkov-kurs-sever"},{"label":"Artefacto — курс","url":"https://artefactoschool.online/course_north_landscapes_ru"}],"number":14,"schools":[{"label":"Enterclass","detail":"Enterclass","url":"https://enterclass.com/ru/expert/60680","absent":false},{"label":"Artefacto","detail":"Artefacto","url":"https://artefactoschool.online/course_north_landscapes_ru","absent":false},{"label":"Школа художника","detail":"Artefacto","url":"https://artefactoschool.online/course_north_landscapes_ru","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true}]},{"name":"Татьяна Анисимова","score":"7.8","level":"профессиональный уровень","summary":"Рабочая пометка: Подходит. Массовый понятный формат, хороший стандартный продукт. Петербургская художница и преподаватель, работающая с акварелью, декоративными мотивами, цветами, пейзажем и предметными постановками. Хорошо адаптирует академические упражнения к понятным онлайн-урокам.","education":"Санкт-Петербургская государственная художественно-промышленная академия имени А. Л. Штиглица, кафедра керамики и стекла, выпуск 1999 года.","why":["Профильное высшее образование, участие в выставках Союза художников и зарубежных проектах.","Преподавательская деятельность с 2008 года и дополнительная подготовка в области педагогических технологий.","Большой набор коммерческих онлайн-курсов на Enterclass; профессиональный бренд устойчив, но внешняя медийность и международное цитирование умеренные."],"works":[{"title":"Акварель из портфолио Enterclass","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/0zdo7nxeans_5eff1022df8b7.jpg","page":"https://enterclass.com/ru/expert/51430"},{"title":"Акварель из портфолио Enterclass","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/5d4mbxlkbfi_5eff102620af3.jpg","page":"https://enterclass.com/ru/expert/51430"},{"title":"Акварель из портфолио Enterclass","image":"https://enterclass.com/upload/img/thumbs/source/userprofileimage/image/5k5uhdlxgz8_5eff102775f05.jpg","page":"https://enterclass.com/ru/expert/51430"},{"title":"Порт","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/anisimova-kurs_67b3029d15577.jpg","page":"https://enterclass.com/ru/expert/51430"},{"title":"Городской мотив","image":"https://enterclass.com/upload/img/thumbs/catalog_item/course/image/oblozka-kursa-svet-v-gorodskom-pejzaze_677a4b507724a.jpg","page":"https://enterclass.com/ru/expert/51430"}],"social":[{"label":"Instagram","url":"https://www.instagram.com/tatianaanisimova6056/"},{"label":"YouTube","url":"https://www.youtube.com/channel/UC1dLl38tdxVo3b1DQWA3L9Q/videos"},{"label":"Enterclass","url":"https://enterclass.com/ru/expert/51430"}],"sources":[{"label":"Enterclass — биография, портфолио и курсы","url":"https://enterclass.com/ru/expert/51430"}],"number":15,"schools":[{"label":"Enterclass","detail":"Enterclass","url":"https://enterclass.com/ru/expert/51430","absent":false},{"label":"Школа художника","detail":"Enterclass — биография, портфолио и курсы","url":"https://enterclass.com/ru/expert/51430","absent":false},{"label":"Kalacheva","detail":"курс не найден","url":"","absent":true},{"label":"Художник-онлайн","detail":"курс не найден","url":"","absent":true},{"label":"Artefacto","detail":"курс не найден","url":"","absent":true}]}];
+    const rows = document.getElementById("artistRows");
+    const search = document.getElementById("search");
+    const empty = document.getElementById("empty");
+    const viewer = document.getElementById("viewer");
+    const viewerImage = document.getElementById("viewerImage");
+    const viewerTitle = document.getElementById("viewerTitle");
+    const openSource = document.getElementById("openSource");
+    let currentArtist = 0;
+    let currentWork = 0;
+
+    function applyFilter() {
+      const term = search.value.trim().toLocaleLowerCase("ru");
+      let visible = 0;
+      rows.querySelectorAll("tr").forEach(row => {
+        const match = !term || row.dataset.search.includes(term);
+        row.style.display = match ? "" : "none";
+        if (match) visible += 1;
+      });
+      empty.style.display = visible ? "none" : "block";
+    }
+
+    function showWork(artistIndex, workIndex) {
+      const artist = artists[artistIndex];
+      if (!artist) return;
+      const total = artist.works.length;
+      const normalized = (workIndex + total) % total;
+      const work = artist.works[normalized];
+      currentArtist = artistIndex;
+      currentWork = normalized;
+      viewerTitle.textContent = artist.name + " — " + work.title + " (" + (normalized + 1) + "/" + total + ")";
+      viewerImage.src = work.fullImage || work.image;
+      viewerImage.alt = artist.name + ": " + work.title;
+      openSource.onclick = () => window.open(work.page, "_blank", "noopener");
+      if (!viewer.open) viewer.showModal();
+    }
+
+    function initNotes() {
+      const storageKey = "sr-watercolor-candidate-notes-v1";
+      let notes = {};
+      try {
+        notes = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      } catch (error) {
+        notes = {};
+      }
+
+      document.querySelectorAll(".notes-cell").forEach(cell => {
+        const key = cell.dataset.noteKey;
+        if (notes[key]) cell.textContent = notes[key];
+        cell.addEventListener("input", () => {
+          notes[key] = cell.textContent.trim();
+          localStorage.setItem(storageKey, JSON.stringify(notes));
+        });
+      });
+    }
+
+    rows.addEventListener("click", event => {
+      const button = event.target.closest(".work button");
+      if (!button) return;
+      showWork(Number(button.dataset.artistIndex), Number(button.dataset.workIndex));
+    });
+    document.getElementById("prevWork").addEventListener("click", () => showWork(currentArtist, currentWork - 1));
+    document.getElementById("nextWork").addEventListener("click", () => showWork(currentArtist, currentWork + 1));
+    document.getElementById("closeViewer").addEventListener("click", () => viewer.close());
+    viewer.addEventListener("click", event => {
+      if (event.target === viewer) viewer.close();
+    });
+    document.addEventListener("keydown", event => {
+      if (!viewer.open) return;
+      if (event.key === "ArrowLeft") showWork(currentArtist, currentWork - 1);
+      if (event.key === "ArrowRight") showWork(currentArtist, currentWork + 1);
+      if (event.key === "Escape") viewer.close();
+    });
+    search.addEventListener("input", applyFilter);
+    initNotes();
+  </script>
+</body>
+</html>
