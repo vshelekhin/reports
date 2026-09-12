@@ -480,66 +480,6 @@
     "checkedAt": "2026-09-12"
   },
   {
-    "artist": "Валерий Толкачев",
-    "title": "Сумерки над полем",
-    "image": "assets/batch-2/tolkachev-1-thumb.jpg",
-    "fullImage": "assets/batch-2/tolkachev-1.jpg",
-    "page": "https://world-watercolor.ru/tolkachev",
-    "sourceImage": "https://static.tildacdn.com/tild3961-3231-4864-b062-636332656236/Swjml6eWBF.jpg",
-    "width": 854,
-    "height": 573,
-    "sha256": "24160eb98a33d43fb18454d4a88d9e9e11aacc6e9c9d7068524de0aa5f91ba83",
-    "checkedAt": "2026-09-12"
-  },
-  {
-    "artist": "Валерий Толкачев",
-    "title": "Закатное небо",
-    "image": "assets/batch-2/tolkachev-2-thumb.jpg",
-    "fullImage": "assets/batch-2/tolkachev-2.jpg",
-    "page": "https://world-watercolor.ru/tolkachev",
-    "sourceImage": "https://static.tildacdn.com/tild6466-3434-4532-b138-343539393936/f9ax07ZhEM.jpg",
-    "width": 1080,
-    "height": 730,
-    "sha256": "24df810f30c0e77cb096cfaf3623d58e363e36b010dc06a6e183bf4580ac8d54",
-    "checkedAt": "2026-09-12"
-  },
-  {
-    "artist": "Валерий Толкачев",
-    "title": "Зимняя улица",
-    "image": "assets/batch-2/tolkachev-3-thumb.jpg",
-    "fullImage": "assets/batch-2/tolkachev-3.jpg",
-    "page": "https://world-watercolor.ru/tolkachev",
-    "sourceImage": "https://static.tildacdn.com/tild3334-6230-4539-b263-646639383039/photo_2024-06-17_16-.jpg",
-    "width": 1051,
-    "height": 698,
-    "sha256": "733b65e232f2b07c358ef59d14a48cc8429fb8934c2e713c6e701a02f5cbc0ce",
-    "checkedAt": "2026-09-12"
-  },
-  {
-    "artist": "Валерий Толкачев",
-    "title": "Луч света над полем",
-    "image": "assets/batch-2/tolkachev-4-thumb.jpg",
-    "fullImage": "assets/batch-2/tolkachev-4.jpg",
-    "page": "https://world-watercolor.ru/tolkachev",
-    "sourceImage": "https://static.tildacdn.com/tild3235-3164-4534-b163-353638653239/photo_2024-06-17_16-.jpg",
-    "width": 1280,
-    "height": 825,
-    "sha256": "8809151937899c7a8955c44b78b8abb5e8907696ccc0164970e8ba53e432b9bd",
-    "checkedAt": "2026-09-12"
-  },
-  {
-    "artist": "Валерий Толкачев",
-    "title": "Снежный пейзаж",
-    "image": "assets/batch-2/tolkachev-5-thumb.jpg",
-    "fullImage": "assets/batch-2/tolkachev-5.jpg",
-    "page": "https://world-watercolor.ru/tolkachev",
-    "sourceImage": "https://static.tildacdn.com/tild3563-6166-4236-a334-643366373230/photo_2024-06-17_16-.jpg",
-    "width": 1280,
-    "height": 855,
-    "sha256": "ebcf9e7610f25a1c73f2f68695e344fe68ec20c7212c039414e5cee36cece062",
-    "checkedAt": "2026-09-12"
-  },
-  {
     "artist": "Ольга Бор",
     "title": "Девушка с яблоком",
     "image": "assets/batch-2/bor-1-thumb.jpg",
