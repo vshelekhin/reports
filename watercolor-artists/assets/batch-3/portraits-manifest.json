@@ -1,0 +1,82 @@
+[
+  {
+    "artist": "Алексей Кравченко",
+    "image": "assets/batch-3/kravchenko-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/kravchenko-portrait.jpg",
+    "page": "https://rah.ru/the_academy_today/the_members_of_the_academie/member.php?ID=52023",
+    "sourceImage": "https://rah.ru/upload/iblock/329/32911aa9a84c18e4fa5351eea1ca8b20.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Рашид Кулбатыров",
+    "image": "assets/batch-3/kulbatyrov-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/kulbatyrov-portrait.jpg",
+    "page": "https://bonart.kz/autors/hudojnik_kulbatyrov-r/",
+    "sourceImage": "https://i0.wp.com/bonart.kz/wp-content/uploads/2020/04/hudojnik_kulbatyrov.jpg?w=220&ssl=1",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Елена Иоктон",
+    "image": "assets/batch-3/iokton-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/iokton-portrait.jpg",
+    "page": "https://inbusiness.kz/ru/stop_cadre/kakim-stanovitsya-tvorcheskoe-prostranstvo-v-almaty",
+    "sourceImage": "https://inbusiness.kz/uploads/2022-5/2KnhRwar.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лизавета Антропова",
+    "image": "assets/batch-3/antropova-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/antropova-portrait.jpg",
+    "page": "https://www.internationalwatercolormuseum.com/members/1737",
+    "sourceImage": "https://www.internationalwatercolormuseum.com/uploads/profile_pictures/BLR_liz_1670927739_9.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Ольга Дадашева",
+    "image": "assets/batch-3/dadasheva-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/dadasheva-portrait.jpg",
+    "page": "https://www.pourpry.com/en/teacher/473",
+    "sourceImage": "https://www.pourpry.com/storage/venues/venue55/professors/7FhMkKGCKjYhP3ljCJa8XB4LQxchPanS2ta8r4GO.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Владимир Шаповалов",
+    "image": "assets/batch-3/shapavalau-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/shapavalau-portrait.jpg",
+    "page": "https://rios-de-color.com/jurado/UladzimirShapavalau",
+    "sourceImage": "https://rios-de-color.com/resources/jury-image/artwork-1770872060679-00c295e9-WhatsApp_Image_2026-02-11_at_09.09.18.jpeg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лида Духневич",
+    "image": "assets/batch-3/duchnewitsch-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/duchnewitsch-portrait.jpg",
+    "page": "https://www.artfinder.com/artist/lida_duchnewitsch/",
+    "sourceImage": "https://d3rf6j5nx5r04a.cloudfront.net/vJSrnb_TPp0rE4s446faS8QFfKA=/240x240/artists/e/1/bf17fb4e2a2b44ef820d3dc595df9fda.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Марлан Нысанбаев",
+    "image": "assets/batch-3/nysanbaev-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/nysanbaev-portrait.jpg",
+    "page": "https://www.iapn.kz/articles/obshchestvo/v_kazhdoy_moey_kartine_est_chastichka_boga/",
+    "sourceImage": "https://www.iapn.kz/upload/medialibrary/1e4/1e45c2e4b8ec6d6c436e01b17f086606.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Павел Пугачёв",
+    "image": "assets/batch-3/pugachev-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/pugachev-portrait.jpg",
+    "page": "https://aster-gallery.com/product_cat/pavel-pugachev/",
+    "sourceImage": "https://aster-gallery.com/wp-content/uploads/2015/10/%D0%9F%D0%B0%D0%B2%D0%B5%D0%BB-%D0%9F%D1%83%D0%B3%D0%B0%D1%87%D0%B5%D0%B2-%D1%84%D0%BE%D1%82%D0%BE-450x450.jpg",
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Светлана Кравченко",
+    "image": "assets/batch-3/svetlana-kravchenko-portrait-thumb.jpg",
+    "fullImage": "assets/batch-3/svetlana-kravchenko-portrait.jpg",
+    "page": "https://ertistv.kz/ru/news/361",
+    "sourceImage": "https://i.ytimg.com/vi/VCpKxY9kCmY/hqdefault.jpg",
+    "visuallyChecked": true
+  }
+]

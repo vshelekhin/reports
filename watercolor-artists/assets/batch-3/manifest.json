@@ -291,5 +291,298 @@
     "sourcePage": "https://rios-de-color.com/jurado/UladzimirShapavalau",
     "fullImage": "assets/batch-3/shapavalau-5.jpg",
     "visuallyChecked": true
+  },
+  {
+    "artist": "Рашид Кулбатыров",
+    "id": "rashid-village",
+    "title": "Small Village",
+    "url": "https://www.ugallery.com/cdn/shop/products/orig_rashid-kulbatyrov-watercolor-painting--village_x944.jpg?v=1692985482",
+    "sourcePage": "https://www.ugallery.com/products/watercolor-painting-small-village",
+    "fullImage": "assets/batch-3/kulbatyrov-1.jpg",
+    "width": 1330,
+    "height": 944,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Рашид Кулбатыров",
+    "id": "rashid-rain",
+    "title": "Rainy Day",
+    "url": "https://www.ugallery.com/cdn/shop/files/Orig_rashid-kulbatyrov-watercolor-painting-rainy-day_x944.jpg?v=1745955750",
+    "sourcePage": "https://www.ugallery.com/products/watercolor-painting-rainy-day-75813",
+    "fullImage": "assets/batch-3/kulbatyrov-2.jpg",
+    "width": 1344,
+    "height": 944,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Рашид Кулбатыров",
+    "id": "rashid-nomads",
+    "title": "Nomads",
+    "url": "https://www.ugallery.com/cdn/shop/files/Orig_rashid-kulbatyrov-acrylic-painting-nomads_x944.jpg?v=1745955571",
+    "sourcePage": "https://www.ugallery.com/products/watercolor-painting-nomads",
+    "fullImage": "assets/batch-3/kulbatyrov-3.jpg",
+    "width": 1259,
+    "height": 944,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Рашид Кулбатыров",
+    "id": "rashid-saukele",
+    "title": "Saukele",
+    "url": "https://richeson75.com/pages/smallworks/2025/images/KulbatyrovR_Saukele.jpg",
+    "sourcePage": "https://richeson75.com/pages/smallworks/2025/index.html",
+    "fullImage": "assets/batch-3/kulbatyrov-4.jpg",
+    "width": 1200,
+    "height": 647,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Рашид Кулбатыров",
+    "id": "rashid-yurts",
+    "title": "Kazakh yurts",
+    "url": "https://richeson75.com/pages/smallworks/2025/images/KulbatyrovR_Kazakhyurts.jpg",
+    "sourcePage": "https://richeson75.com/pages/smallworks/2025/index.html",
+    "fullImage": "assets/batch-3/kulbatyrov-5.jpg",
+    "width": 1200,
+    "height": 648,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Елена Иоктон",
+    "id": "iokton-hunter",
+    "title": "Hunter",
+    "url": "https://iwscanada.ca/wp-content/uploads/2018/09/o29-a-small.jpg",
+    "sourcePage": "https://iwscanada.ca/exhibitions/a-symphony-in-watercolour-2018/finalists/",
+    "fullImage": "assets/batch-3/iokton-1.jpg",
+    "width": 1080,
+    "height": 795,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Елена Иоктон",
+    "id": "iokton-museum",
+    "title": "Портрет, коллекция Fabriano",
+    "url": "https://internationalwatercolormuseum.com/uploads/museum/MAT0120.jpg",
+    "sourcePage": "https://internationalwatercolormuseum.com/museo/opera/MAT0120",
+    "fullImage": "assets/batch-3/iokton-2.jpg",
+    "width": 1633,
+    "height": 2386,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Елена Иоктон",
+    "id": "time2020-8",
+    "title": "Другая сторона Рождества",
+    "url": "https://time.kz/files/000/025/Kue6cXyYL764.jpg",
+    "sourcePage": "https://time.kz/articles/grim/2020/10/05/na-odnom-dyhanii",
+    "fullImage": "assets/batch-3/iokton-3.jpg",
+    "crop": {
+      "left": 32,
+      "top": 36,
+      "width": 465,
+      "height": 606
+    },
+    "width": 465,
+    "height": 606,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Елена Иоктон",
+    "id": "time2020-9",
+    "title": "Цветы у окна",
+    "url": "https://time.kz/files/000/025/BD51KG767.jpg",
+    "sourcePage": "https://time.kz/articles/grim/2020/10/05/na-odnom-dyhanii",
+    "fullImage": "assets/batch-3/iokton-4.jpg",
+    "crop": {
+      "left": 95,
+      "top": 158,
+      "width": 382,
+      "height": 523
+    },
+    "width": 382,
+    "height": 523,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Елена Иоктон",
+    "id": "time2020-9",
+    "title": "Портрет с яблоком",
+    "url": "https://time.kz/files/000/025/BD51KG767.jpg",
+    "sourcePage": "https://time.kz/articles/grim/2020/10/05/na-odnom-dyhanii",
+    "fullImage": "assets/batch-3/iokton-5.jpg",
+    "crop": {
+      "left": 708,
+      "top": 170,
+      "width": 383,
+      "height": 528
+    },
+    "width": 383,
+    "height": 528,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лида Духневич",
+    "id": "lida-daffodils-full",
+    "title": "Bouquet of daffodils",
+    "url": "https://d3rf6j5nx5r04a.cloudfront.net/NyqOUOy0XMAubQRWpGqV4e-_hok=/1120x0/product/f/b/3294007d2feb4843aa186a09a277d440_opt.jpg",
+    "sourcePage": "https://www.artfinder.com/product/bouquet-of-daffodils-c2538/",
+    "fullImage": "assets/batch-3/duchnewitsch-1.jpg",
+    "width": 1120,
+    "height": 774,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лида Духневич",
+    "id": "lida-roses-full",
+    "title": "Roses",
+    "url": "https://d3rf6j5nx5r04a.cloudfront.net/N1_Uc0SM_Wjvv90HVON5Pxd_tNE=/1120x0/product/0/2/d5ba6c66cfd34d159dbb0c430c108b3f_opt.jpg",
+    "sourcePage": "https://www.artfinder.com/product/roses-de57d/",
+    "fullImage": "assets/batch-3/duchnewitsch-2.jpg",
+    "width": 1120,
+    "height": 1515,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лида Духневич",
+    "id": "lida-sunny-full",
+    "title": "Sunny warmth in the petals",
+    "url": "https://d3rf6j5nx5r04a.cloudfront.net/cDbNq_pWV8m6BHWdKOlD04YtI04=/1120x0/product/7/d/ba02316eb5ed4da094b88f64440bb599_opt.jpg",
+    "sourcePage": "https://www.artfinder.com/product/sunny-warmth-in-the-petals-6e726/",
+    "fullImage": "assets/batch-3/duchnewitsch-3.jpg",
+    "width": 1120,
+    "height": 1559,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лида Духневич",
+    "id": "lida-hydrangea",
+    "title": "Hydrangea palette",
+    "url": "https://d3rf6j5nx5r04a.cloudfront.net/x1ZUgpC3bhsF4SbPN7w5n1QwutY=/1120x0/product/2/1/74d572575fa24bb2bb4395cf75d25cf3_opt.jpg",
+    "sourcePage": "https://www.artfinder.com/product/hydrangea-palette/",
+    "fullImage": "assets/batch-3/duchnewitsch-4.jpg",
+    "width": 1120,
+    "height": 826,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Лида Духневич",
+    "id": "lida-peony",
+    "title": "Pink peony",
+    "url": "https://d3rf6j5nx5r04a.cloudfront.net/Xinf2otWEXjdzUz0RdeoJv1piLA=/1120x0/product/0/2/37f172d8121d4da580c6494e31b41609_opt.jpg",
+    "sourcePage": "https://www.artfinder.com/product/pink-peony-9e6fe/",
+    "fullImage": "assets/batch-3/duchnewitsch-5.jpg",
+    "width": 1120,
+    "height": 828,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Марлан Нысанбаев",
+    "id": "marlan-3",
+    "title": "Река на закате",
+    "url": "https://el.kz/upload/medialibrary/fc3/fc395443db729c883ca43fea3cb7c715.jpeg",
+    "sourcePage": "https://el.kz/ru/marlan_nysanbaev-_-u_khudozhnikov_net_statusa_41386/",
+    "fullImage": "assets/batch-3/nysanbaev-1.jpg",
+    "width": 1024,
+    "height": 673,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Марлан Нысанбаев",
+    "id": "marlan-4",
+    "title": "Горная река",
+    "url": "https://el.kz/upload/medialibrary/70c/70c03cef208c1188745563d7eadfaf4d.jpeg",
+    "sourcePage": "https://el.kz/ru/marlan_nysanbaev-_-u_khudozhnikov_net_statusa_41386/",
+    "fullImage": "assets/batch-3/nysanbaev-2.jpg",
+    "width": 960,
+    "height": 720,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Марлан Нысанбаев",
+    "id": "marlan-iapn-13",
+    "title": "Зимние горы",
+    "url": "https://www.iapn.kz/upload/medialibrary/4d5/4d5c02d089d91f7ea91c6025b658fef7.jpg",
+    "sourcePage": "https://www.iapn.kz/articles/obshchestvo/v_kazhdoy_moey_kartine_est_chastichka_boga/",
+    "fullImage": "assets/batch-3/nysanbaev-3.jpg",
+    "width": 1024,
+    "height": 692,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Марлан Нысанбаев",
+    "id": "marlan-iapn-18",
+    "title": "Каменный мост",
+    "url": "https://www.iapn.kz/upload/medialibrary/39e/39ea558f981d494d1bb605ea9bec0e58.jpg",
+    "sourcePage": "https://www.iapn.kz/articles/obshchestvo/v_kazhdoy_moey_kartine_est_chastichka_boga/",
+    "fullImage": "assets/batch-3/nysanbaev-4.jpg",
+    "width": 1024,
+    "height": 692,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Марлан Нысанбаев",
+    "id": "time2020-6",
+    "title": "Водопад «Девичьи слезы»",
+    "url": "https://time.kz/files/000/025/fPnWA766.jpg",
+    "sourcePage": "https://time.kz/articles/grim/2020/10/05/na-odnom-dyhanii",
+    "fullImage": "assets/batch-3/nysanbaev-5.jpg",
+    "width": 583,
+    "height": 800,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Светлана Кравченко",
+    "id": "svetlana-2",
+    "title": "Белые цветы",
+    "url": "https://www.zakon.kz/pbi/WEBP/2023-12-25/file-6df611b2-cd39-4ed2-a6e1-c5f8c16b049a/800x527.webp",
+    "sourcePage": "https://www.zakon.kz/amp/reportazh/6391960-iskusstvo-bez-prava-na-oshibku-vystavka-akvarelnykh-rabot-otkrylas-v-pavlodare.html",
+    "fullImage": "assets/batch-3/svetlana-kravchenko-1.jpg",
+    "width": 800,
+    "height": 527,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Светлана Кравченко",
+    "id": "svetlana-8",
+    "title": "Натюрморт с гранатом",
+    "url": "https://www.zakon.kz/pbi/WEBP/2023-12-25/file-126591d7-7196-4e32-bfd5-6b42f3cb9aa0/800x607.webp",
+    "sourcePage": "https://www.zakon.kz/amp/reportazh/6391960-iskusstvo-bez-prava-na-oshibku-vystavka-akvarelnykh-rabot-otkrylas-v-pavlodare.html",
+    "fullImage": "assets/batch-3/svetlana-kravchenko-2.jpg",
+    "width": 800,
+    "height": 607,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Светлана Кравченко",
+    "id": "svetlana-13",
+    "title": "В дороге",
+    "url": "https://www.zakon.kz/pbi/WEBP/2023-12-25/file-154bf66d-9fbb-4eea-a51b-0760acba413d/800x582.webp",
+    "sourcePage": "https://www.zakon.kz/amp/reportazh/6391960-iskusstvo-bez-prava-na-oshibku-vystavka-akvarelnykh-rabot-otkrylas-v-pavlodare.html",
+    "fullImage": "assets/batch-3/svetlana-kravchenko-3.jpg",
+    "width": 800,
+    "height": 582,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Светлана Кравченко",
+    "id": "svetlana-4",
+    "title": "Натюрморт с рябиной",
+    "url": "https://www.zakon.kz/pbi/WEBP/2023-12-25/file-b2ce5be5-969e-4528-a705-8578b10b86c3/800x594.webp",
+    "sourcePage": "https://www.zakon.kz/amp/reportazh/6391960-iskusstvo-bez-prava-na-oshibku-vystavka-akvarelnykh-rabot-otkrylas-v-pavlodare.html",
+    "fullImage": "assets/batch-3/svetlana-kravchenko-4.jpg",
+    "width": 800,
+    "height": 594,
+    "visuallyChecked": true
+  },
+  {
+    "artist": "Светлана Кравченко",
+    "id": "svetlana-6",
+    "title": "Продавец тканей",
+    "url": "https://www.zakon.kz/pbi/WEBP/2023-12-25/file-d498d991-2fb8-454c-860a-9b23f8f0a938/800x587.webp",
+    "sourcePage": "https://www.zakon.kz/amp/reportazh/6391960-iskusstvo-bez-prava-na-oshibku-vystavka-akvarelnykh-rabot-otkrylas-v-pavlodare.html",
+    "fullImage": "assets/batch-3/svetlana-kravchenko-5.jpg",
+    "width": 800,
+    "height": 587,
+    "visuallyChecked": true
   }
 ]
