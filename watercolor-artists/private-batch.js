@@ -152,7 +152,7 @@
         const material = await crypto.subtle.importKey("raw", encoder.encode(input.value), "PBKDF2", false, ["deriveKey"]);
         const derived = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: unpack(envelope.salt), iterations: envelope.iterations, hash: "SHA-256" }, material, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
         const payload = await decrypt(envelope, derived);
-        if (payload.batch !== 4 || !Array.isArray(payload.artists) || payload.artists.length !== 11) throw new Error("Bad batch");
+        if (payload.batch !== 4 || !Array.isArray(payload.artists) || !payload.artists.length || payload.artists.length > 100) throw new Error("Bad batch");
         input.value = ""; key = derived; salt = envelope.salt;
         let warning = "";
         try { const saved = localStorage.getItem(noteKey); if (saved) notes = await decrypt(JSON.parse(saved), key); }
@@ -177,7 +177,7 @@
     search.disabled = selected && !unlocked;
     refresh.hidden = selected;
     if (selected) {
-      batchMeta.textContent = unlocked ? "Партия 4: 11 художников. Закрытый черновик, не передан в работу." : "Партия 4 закрыта паролем.";
+      batchMeta.textContent = unlocked ? `Партия 4: ${artists.length - publicCount} художников. Закрытый черновик, не передан в работу.` : "Партия 4 закрыта паролем.";
       if (!unlocked) empty.style.display = "none";
     }
   }
