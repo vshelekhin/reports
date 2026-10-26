@@ -1,0 +1,23 @@
+#privateBatch[hidden] { display: none; }
+#privateBatch { margin-bottom: 12px; }
+.draft-lock { max-width: 400px; padding: 22px 0; }
+.draft-lock h2 { margin: 0 0 14px; font-size: 18px; }
+.draft-lock form { display: grid; gap: 10px; }
+.draft-lock label { display: grid; gap: 5px; }
+.draft-lock button, .draft-tools button { min-height: 36px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; cursor: pointer; }
+.draft-lock button[type="submit"] { background: #2d3842; color: #fff; }
+.draft-error { margin: 0; color: #b42318; font-size: 13px; }
+.draft-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.draft-tools p { margin: 0 auto 0 0; color: var(--muted); font-size: 12px; }
+.draft-note-panel { display: grid; gap: 8px; }
+.draft-note-panel label { display: grid; gap: 3px; font-size: 11px; color: var(--muted); }
+.draft-note-panel select, .draft-note-panel textarea { width: 100%; padding: 6px 7px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-size: 12px; }
+.draft-note-panel textarea { min-height: 100px; resize: vertical; }
+[data-batch="4"] .work img { height: auto; object-fit: contain; background: #fff; }
+[data-batch="4"] .expert-portrait-button { display: block; width: 112px; height: 144px; margin: 8px 0; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 4px; background: #f0f2f4; cursor: zoom-in; }
+[data-batch="4"] .expert-portrait { display: block; width: 112px; height: 144px; object-fit: cover; }
+[data-batch="4"] .expert-portrait-button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+[data-batch="4"] .launch-label { color: #246342; font-weight: bold; }
+[data-batch="4"] .launch-label::before { content: "\2605"; margin-right: 5px; }
+.draft-warning { display: block; margin-top: 8px; color: #8a4200; font-size: 12px; }
+@media (max-width: 600px) { .draft-lock { max-width: 100%; } .draft-tools p { flex-basis: 100%; } }

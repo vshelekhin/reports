@@ -118,7 +118,9 @@
       <button class="batch-tab" type="button" data-batch-tab="1">Партия 1 <span>14</span></button>
       <button class="batch-tab" type="button" data-batch-tab="2">Партия 2 <span>13</span></button>
       <button class="batch-tab" type="button" data-batch-tab="3">Партия 3 <span>10</span></button>
+      <button class="batch-tab" type="button" data-batch-tab="4">Партия 4 <span>Закрыта</span></button>
     </nav>
+    <section id="privateBatch" hidden aria-label="Закрытая партия"></section>
     <div class="empty" id="empty">По этому фильтру ничего не найдено.</div>
     <div class="table-wrap">
       <table>
@@ -2392,6 +2394,7 @@
         window.history.replaceState(null, "", target);
       }
       applyFilter();
+      window.dispatchEvent(new CustomEvent("artist-batch-change", { detail: activeBatch }));
     }
 
     function applyFilter() {
@@ -2601,5 +2604,7 @@
     search.addEventListener("input", applyFilter);
     initNotes();
   </script>
+  <link rel="stylesheet" href="private-batch.css">
+  <script src="private-batch.js"></script>
 </body>
 </html>
