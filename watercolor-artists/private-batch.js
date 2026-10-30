@@ -30,6 +30,11 @@
   };
   const link = item => `<a href="${escape(safeUrl(item.url))}" target="_blank" rel="noopener noreferrer">${escape(item.label)}</a>`;
   const list = items => `<ul>${items.map(item => `<li>${item.url ? link(item) : escape(item.label)}${item.detail ? ": " + escape(item.detail) : ""}</li>`).join("")}</ul>`;
+  function ratingCell(score) {
+    return typeof score === "number" && Number.isFinite(score)
+      ? `<span class="rating">${score.toFixed(1)}</span><span class="level">/ 10</span>`
+      : `<span class="note">Без оценки</span>`;
+  }
   function imageUrl(data) {
     const match = /^data:(image\/(?:jpeg|png|webp));base64,(.+)$/.exec(data);
     if (!match) throw new Error("Bad image payload");
@@ -63,7 +68,7 @@
       const works = artist.works.map((work, wi) => `<div class="work"><button type="button" data-artist-index="${artistIndex}" data-work-index="${wi}" aria-label="Увеличить: ${escape(work.title)}"><img src="${work.image}" alt="${escape(artist.name + ": " + work.title)}" loading="lazy" width="320" height="320"></button><span>${link({ label: work.title, url: work.page })}</span></div>`).join("");
       row.innerHTML = `<td class="col-number">${index + 1}</td>
         <td class="col-name"><p class="name">${escape(item.name)}</p>${artist.portrait ? `<button type="button" class="expert-portrait-button" data-portrait-index="${artistIndex}" aria-label="Увеличить фото: ${escape(item.name)}"><img class="expert-portrait" src="${artist.portrait.image}" alt="${escape(item.name)}" width="112" height="144" loading="lazy"></button>` : ""}<span class="note">${escape(item.location)}</span><br><span class="note">${escape(item.ageLabel)}</span>${item.recommendation ? `<div class="launch-recommendation"><span class="launch-label">Удобнее для запуска</span><p>${escape(item.recommendation)}</p><span class="note">Условия и согласие ещё не обсуждались.</span></div>` : ""}</td>
-        <td class="col-rating"><span class="rating">${Number(item.score).toFixed(1)}</span><span class="level">/ 10</span></td>
+        <td class="col-rating">${ratingCell(item.score)}</td>
         <td class="col-summary">${escape(item.summary)}${item.warning ? `<span class="draft-warning">${escape(item.warning)}</span>` : ""}</td>
         <td class="col-education">${escape(item.education)}</td><td class="col-why">${list(item.why)}</td>
         <td class="col-works"><div class="gallery">${works}</div>${item.artNote ? `<p class="note">${escape(item.artNote)}</p>` : ""}</td>
