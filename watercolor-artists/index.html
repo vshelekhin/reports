@@ -2397,6 +2397,22 @@
       window.dispatchEvent(new CustomEvent("artist-batch-change", { detail: activeBatch }));
     }
 
+    function sortRowsByRating() {
+      const ordered = [...rows.querySelectorAll("tr")].sort((a, b) => {
+        const batchDifference = Number(a.dataset.batch || 1) - Number(b.dataset.batch || 1);
+        if (batchDifference) return batchDifference;
+        return Number(b.querySelector(".rating").textContent) - Number(a.querySelector(".rating").textContent);
+      });
+      const numbers = new Map();
+      for (const row of ordered) {
+        const batch = row.dataset.batch || "1";
+        const number = (numbers.get(batch) || 0) + 1;
+        numbers.set(batch, number);
+        row.querySelector(".col-number").textContent = number;
+        rows.appendChild(row);
+      }
+    }
+
     function applyFilter() {
       const term = search.value.trim().toLocaleLowerCase("ru");
       let visible = 0;
@@ -2598,6 +2614,7 @@
     batchTabs.forEach(tab => {
       tab.addEventListener("click", () => setActiveBatch(tab.dataset.batchTab, { updateUrl: true }));
     });
+    sortRowsByRating();
     const requestedBatch = getRequestedBatch();
     canonicalizeUrl();
     setActiveBatch(requestedBatch);
