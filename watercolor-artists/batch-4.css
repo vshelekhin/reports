@@ -1,0 +1,7 @@
+[data-batch="4"] .work img { height: auto; object-fit: contain; background: #fff; }
+[data-batch="4"] .expert-portrait-button { display: block; width: 112px; height: 144px; margin: 8px 0; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 4px; background: #f0f2f4; cursor: zoom-in; }
+[data-batch="4"] .expert-portrait { display: block; width: 112px; height: 144px; object-fit: cover; }
+[data-batch="4"] .expert-portrait-button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+[data-batch="4"] .launch-label { color: #246342; font-weight: bold; }
+[data-batch="4"] .launch-label::before { content: "\2605"; margin-right: 5px; }
+[data-batch="4"] .candidate-warning { display: block; margin-top: 8px; color: #8a4200; font-size: 12px; }
